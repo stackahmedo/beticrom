@@ -20,7 +20,7 @@ app.use(
 );
 
 // Health check endpoint
-app.get("/make-server-89f304fc/health", (c) => {
+app.get("/api/health", (c) => {
   return c.json({ status: "ok" });
 });
 
