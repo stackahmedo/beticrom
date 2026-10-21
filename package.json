@@ -1,8 +1,8 @@
 {
-  "name": "mybimi-halal-market",
+  "name": "beticorm-halal-market",
   "private": true,
   "version": "1.0.0",
-  "description": "MyBIMI Halal Market Japan - E-Commerce Web Application",
+  "description": "Beticorm Halal Market Japan - E-Commerce Web Application",
   "type": "module",
   "scripts": {
     "build": "vite build",

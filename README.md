@@ -1,9 +1,9 @@
-# MyBIMI Halal Market (マイビミ・ハラール市場)
+# Beticorm Halal Market (ベティコルム・ハラール市場)
 
 High-performance e-commerce storefront for authentic halal groceries, fresh meats, frozen food, and pantry essentials in Japan.
 
 ## Overview
-MyBIMI Halal Market delivers verified halal food products across Japan with temperature-segregated logistics (Dry, Cool, Frozen) via Yamato Transport. The catalog features over 900 authenticated products, real-time multilingual support, and domestic Japanese payment methods.
+Beticorm Halal Market delivers verified halal food products across Japan with temperature-segregated logistics (Dry, Cool, Frozen) via Yamato Transport. The catalog features over 900 authenticated products, real-time multilingual support, and domestic Japanese payment methods.
 
 ## Tech Stack
 - **Core:** React 18, TypeScript, Vite

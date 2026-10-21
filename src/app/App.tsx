@@ -230,9 +230,9 @@ function Header({
           </div>
           <div className="hidden sm:block">
             <div className="text-sm font-extrabold tracking-tight leading-none" style={{ color: GREEN }}>
-              MyBIMI <span className="text-amber-600 font-semibold text-xs">Halal Market</span>
+              Beticorm <span className="text-amber-600 font-semibold text-xs">Halal Market</span>
             </div>
-            <div className="text-[10px] text-muted-foreground leading-none mt-0.5">マイビミ・ハラール市場 · Japan</div>
+            <div className="text-[10px] text-muted-foreground leading-none mt-0.5">ベティコルム・ハラール市場 · Japan</div>
           </div>
         </button>
 
@@ -412,7 +412,7 @@ function Homepage({
         <div className="text-white flex items-center justify-between px-4 py-2 text-xs font-medium" style={{ background: GREEN }}>
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-center gap-1 sm:gap-6 text-center">
             <span>🚚 {t("¥6,500以上のご注文で常温送料無料 · 全国配送", "Free dry shipping on orders over ¥6,500 · Japan-wide")}</span>
-            <span className="font-extrabold bg-white/20 px-2 py-0.5 rounded-full">{t("新規クーポン: MYBIMI500 (¥500引)", "New customer coupon: MYBIMI500")}</span>
+            <span className="font-extrabold bg-white/20 px-2 py-0.5 rounded-full">{t("新規クーポン: BETICORM500 (¥500引)", "New customer coupon: BETICORM500")}</span>
           </div>
           <button onClick={() => setDismissed(true)} className="ml-2 shrink-0 hover:opacity-70"><X size={14} /></button>
         </div>
@@ -516,7 +516,7 @@ function Homepage({
           <SectionHeader
             title={t("本日のセール", "Today's Deals")}
             badge="FLASH SALE"
-            sub={t("MyBIMI人気商品の特別割引", "Special discounts on authentic halal staples")}
+            sub={t("Beticorm人気商品の特別割引", "Special discounts on authentic halal staples")}
             cta={t("セール全品を見る", "View all deals")}
             onCta={() => setView("category")}
           />
@@ -753,7 +753,7 @@ function Homepage({
         <section className="bg-card border border-border rounded-2xl p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row gap-6 items-start">
             <div className="flex-1">
-              <h2 className="text-xl font-extrabold text-foreground mb-1">{t("MyBIMIのハラール基準", "Our Halal Standards")}</h2>
+              <h2 className="text-xl font-extrabold text-foreground mb-1">{t("Beticormのハラール基準", "Our Halal Standards")}</h2>
               <p className="text-sm text-muted-foreground mb-5">
                 {t("当店で取り扱う全948商品は、厳格なハラール基準に基づき区分されています。", "Every single product is clearly classified by transparent halal compliance tier.")}
               </p>
@@ -854,7 +854,7 @@ function Homepage({
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-extrabold text-sm" style={{ background: GREEN }}>☪</div>
                 <div>
-                  <div className="text-sm font-extrabold" style={{ color: GREEN }}>MyBIMI</div>
+                  <div className="text-sm font-extrabold" style={{ color: GREEN }}>Beticorm</div>
                   <div className="text-[10px] text-muted-foreground">Halal Market Japan</div>
                 </div>
               </div>
@@ -869,7 +869,7 @@ function Homepage({
               </div>
             </div>
             {[
-              { h: "Company", links: ["About MyBIMI", "Shin-Koiwa Store", "BIMI Kitchen", "Wholesale Inquiry"] },
+              { h: "Company", links: ["About Beticorm", "Tokyo Distribution Hub", "Store Locations", "Wholesale Inquiry"] },
               { h: "Categories", links: ["Halal Meat", "Frozen Foods", "Rice & Flour", "Spices", "Under ¥500"] },
               { h: "Trust & Safety", links: ["Halal Standards", "JMA Certification", "Yamato Cold Chain", "Quality Guarantee"] },
               { h: "Support", links: ["Track Order", "Delivery Rates", "FAQ", "Contact Us"] },
@@ -882,7 +882,7 @@ function Homepage({
             ))}
           </div>
           <div className="border-t border-border pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-[11px] text-muted-foreground">© 2026 MyBIMI Halal Market (マイビミ・ハラール市場). All rights reserved.</p>
+            <p className="text-[11px] text-muted-foreground">© 2026 Beticorm Halal Market (ベティコルム・ハラール市場). All rights reserved.</p>
             <div className="flex flex-wrap items-center gap-1">
               {[
                 { n: "Visa", c: "#1A1F71" }, { n: "Mastercard", c: "#EB001B" }, { n: "JCB", c: "#007B40" }, { n: "Amex", c: "#007BC1" },
@@ -950,7 +950,7 @@ function CategoryPage({
       <div className="relative rounded-2xl overflow-hidden h-36 mb-5">
         <img
           src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1400&h=300&fit=crop&auto=format"
-          alt="MyBIMI Catalog"
+          alt="Beticorm Catalog"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 flex items-center px-6" style={{ background: "linear-gradient(to right, rgba(11,79,42,0.88), transparent)" }}>
@@ -1572,7 +1572,7 @@ function CheckoutPage({ locale, setView }: { locale: Locale; setView: (v: View) 
             ))}
             <button
               onClick={() => {
-                alert("Order confirmed! Thank you for shopping with MyBIMI Halal Market.");
+                alert("Order confirmed! Thank you for shopping with Beticorm Halal Market.");
                 setView("home");
               }}
               className="w-full py-3.5 rounded-xl text-white font-bold text-sm shadow-lg mt-4"
@@ -1701,7 +1701,7 @@ function AdminPanel({ setView }: { setView: (v: View) => void }) {
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center text-white font-extrabold text-sm">☪</div>
             <div>
-              <p className="text-xs font-extrabold text-white">MyBIMI Admin</p>
+              <p className="text-xs font-extrabold text-white">Beticorm Admin</p>
               <p className="text-[10px] text-white/50">Halal Market Japan</p>
             </div>
           </div>
@@ -1737,7 +1737,7 @@ function AdminPanel({ setView }: { setView: (v: View) => void }) {
           {/* Dashboard Metrics */}
           <div className="grid grid-cols-4 gap-4">
             {[
-              ["948", "Active Products", "+100% from MyBIMI Scraper"],
+              ["948", "Active Products", "948 In-Stock Items"],
               ["¥842,500", "Monthly GMV", "+18.4% vs last month"],
               ["142", "Active Orders", "98 shipped via Yamato"],
               ["3", "Pending Halal Reviews", "Awaiting JMA certs"],
@@ -1810,7 +1810,7 @@ function AdminPanel({ setView }: { setView: (v: View) => void }) {
                 System Integration Status
               </h2>
               <ul className="text-xs space-y-2 text-muted-foreground">
-                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> GitHub Catalog: 948 real MyBIMI products parsed and integrated from <code>stackahmedo/scrap_product_mybimi</code>.</li>
+                <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Catalog Integration: 948 authentic halal products active with real-time stock counters.</li>
                 <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Image Pipeline: 993 product photos accessible via Cloudflare edge CDN.</li>
                 <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> Merchandising: Section 12 (Under ¥500 Zone) and Section 13 (Family Bundles) fully active.</li>
                 <li className="flex items-center gap-2"><span className="text-emerald-600 font-bold">✓</span> React Stability: Admin Panel hook violation resolved via isolated row components.</li>

@@ -93,7 +93,7 @@ export const BRANDS = [
   { name: "Mehran",        color: "#0369A1", bg: "#EBF5FF" },
   { name: "Laziza",        color: "#11683A", bg: "#F0FFF4" },
   { name: "Bombay Sweets", color: "#D97706", bg: "#FFFBEB" },
-  { name: "MyBIMI",        color: "#11683A", bg: "#F0FFF4" },
+  { name: "Beticorm",      color: "#11683A", bg: "#F0FFF4" },
 ];
 
 // ─── Curated Sections for Storefront ────────────────────────────────────────

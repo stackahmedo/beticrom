@@ -1,7 +1,7 @@
 # Plan: Halal Grocery Ecommerce Storefront (Japan) — Homepage Demo
 
 ## Context
-This project implements the design and storefront architecture for **MyBIMI Halal Market**, a halal grocery ecommerce platform targeting Japan. The storefront emphasizes a **mobile-first, trust-led, promotion-aware grocery experience** with dense category access, deal zones, and high-quality product merchandising — combined with rigorous halal credibility signals, trilingual localization (JA/EN/BN), and repeat-order convenience.
+This project implements the design and storefront architecture for **Beticorm Halal Market**, a halal grocery ecommerce platform targeting Japan. The storefront emphasizes a **mobile-first, trust-led, promotion-aware grocery experience** with dense category access, deal zones, and high-quality product merchandising — combined with rigorous halal credibility signals, trilingual localization (JA/EN/BN), and repeat-order convenience.
 
 The deliverable is an interactive homepage demo showcasing the key UX surfaces described in the document.
 

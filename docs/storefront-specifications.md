@@ -1,31 +1,31 @@
 # E-Commerce Design System & Layout Specification
 
 ## Executive Summary
-This document specifies the complete design system, page hierarchy, and section architecture for **MyBIMI Halal Market**, spanning the customer storefront (Homepage, Category PLP, Product PDP, Cart, Checkout, Account) and operational merchant administration.
+This document specifies the complete design system, page hierarchy, and section architecture for **Beticorm Halal Market**, spanning the customer storefront (Homepage, Category PLP, Product PDP, Cart, Checkout, Account) and operational merchant administration.
 
 ---
 
 ## Design System Architecture
-This architecture defines the complete modern ecommerce UI/UX design system for “MyBIMI Halal Market”, a dedicated halal grocery EC platform in Japan.
+This architecture defines the complete modern ecommerce UI/UX design system for “Beticorm Halal Market”, a dedicated halal grocery EC platform in Japan.
 
 The design must feel modern, professional, trustworthy, mobile-first, conversion-focused, and future-proof for at least 3 years. It should be inspired by the strong product discovery, category density, deal sections, and shopping flow of SHEIN, but must NOT copy SHEIN branding or layout exactly. Adapt the idea for halal grocery, frozen foods, pantry items, South Asian groceries, and Japan-based ecommerce.
 
 Brand name:
-MyBIMI Halal Market
+Beticorm Halal Market
 
 Japanese name:
-マイビミ・ハラール市場
+ベティコルム・ハラール市場
 
 Business:
-MyBIMI sells halal groceries in Japan: halal meat, frozen food, rice, flour, spices, lentils, snacks, drinks, baby products, beauty/personal care, and daily essentials. Target users are Muslim residents in Japan, Bangladeshi, Indian, Pakistani, Nepali, Indonesian customers, and Japanese halal-curious customers.
+Beticorm sells halal groceries in Japan: halal meat, frozen food, rice, flour, spices, lentils, snacks, drinks, baby products, beauty/personal care, and daily essentials. Target users are Muslim residents in Japan, Bangladeshi, Indian, Pakistani, Nepali, Indonesian customers, and Japanese halal-curious customers.
 
 Main design goal:
-Make the site look richer, more complete, more premium, more commercial, and more trustworthy than a simple prototype. Avoid too much empty white space. Add more homepage content, better product discovery, stronger trust sections, stronger product cards, better footer, and stronger MyBIMI branding.
+Make the site look richer, more complete, more premium, more commercial, and more trustworthy than a simple prototype. Avoid too much empty white space. Add more homepage content, better product discovery, stronger trust sections, stronger product cards, better footer, and stronger Beticorm branding.
 
 Use these brand colors:
 - Primary deep halal green: #11683A
 - Dark green: #0B4F2A
-- MyBIMI red / offer red: #D92D20
+- Beticorm red / offer red: #D92D20
 - Warm orange/gold accent: #F59E0B
 - Background warm white: #FAF8F3
 - Card white: #FFFFFF
@@ -97,7 +97,7 @@ Add small coupon message optional: “New customer coupon: MYBIMI500”
 
 2. Header
 White sticky header with soft shadow.
-Left: MyBIMI logo placeholder + “MyBIMI Halal Market”
+Left: Beticorm logo placeholder + “Beticorm Halal Market”
 Center: large search bar with placeholder “Search rice, halal meat, spices, frozen food...”
 Right: Delivery to / postal code checker, JA / EN / BN language switcher, Account, Wishlist, Cart.
 Cart should show item count badge.
@@ -282,7 +282,7 @@ Buttons:
 Make footer much richer than current design.
 Columns:
 Company:
-About MyBIMI, Store Location, Careers, Business Inquiry
+About Beticorm, Store Location, Careers, Business Inquiry
 Shop:
 Halal Meat, Frozen Foods, Rice & Flour, Spices, Deals
 Trust:
@@ -385,7 +385,7 @@ Create dashboard with:
 - Track order
 
 Admin Panel:
-Create modern admin dashboard for MyBIMI.
+Create modern admin dashboard for Beticorm.
 Sidebar:
 Dashboard, Orders, Products, Inventory, Customers, Promotions, Delivery, Halal Verification, Content, Reports, Settings.
 Dashboard cards:
@@ -475,7 +475,7 @@ Use this exact order:
 | Area                          | Design System Solution                       |
 | ----------------------------- | -------------------------------------------- |
 | Whitespace & layout balance   | Add richer homepage merchandising sections   |
-| Branding identity             | Establish **MyBIMI Halal Market** wordmark   |
+| Branding identity             | Establish **Beticorm Halal Market** wordmark   |
 | Category navigation           | Use photo/icon hybrid visual tiles           |
 | Product catalog density       | Display dense multi-column product grids     |
 | Comprehensive footer          | Add full ecommerce footer with legal links   |
@@ -522,7 +522,7 @@ Japanese version:
 ```text
 日本全国へ届ける、信頼のハラール食品ストア
 
-ハラール肉、冷凍食品、お米、スパイス、スナック、日用品まで、MyBIMIが日本全国へお届けします。
+ハラール肉、冷凍食品、お米、スパイス、スナック、日用品まで、Beticormが日本全国へお届けします。
 
 [本日のセールを見る] [ハラール肉を見る]
 
