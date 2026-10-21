@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { Snowflake, Package, Thermometer, Shield, Heart, Check } from "lucide-react";
-import type { Product, Locale, HalalTier, StorageType } from "../../data/products";
+import {
+  type Product,
+  type Locale,
+  type HalalTier,
+  type StorageType,
+  getUnitPrice,
+} from "../../data/products";
 
 interface ProductCardProps {
   product: Product;
   locale: Locale;
   onAdd: (product: Product) => void;
   onView: () => void;
+  showUnitPrice?: boolean;
 }
 
 const HALAL_CONFIG: Record<
@@ -88,7 +95,13 @@ export function StorageBadge({ type, locale = "JA" }: { type: StorageType; local
   );
 }
 
-export function ProductCard({ product: p, locale, onAdd, onView }: ProductCardProps) {
+export function ProductCard({
+  product: p,
+  locale,
+  onAdd,
+  onView,
+  showUnitPrice = true,
+}: ProductCardProps) {
   const [added, setAdded] = useState(false);
   const [wished, setWished] = useState(false);
 
@@ -96,6 +109,8 @@ export function ProductCard({ product: p, locale, onAdd, onView }: ProductCardPr
     p.comparePrice && p.comparePrice > p.price
       ? Math.round((1 - p.price / p.comparePrice) * 100)
       : 0;
+
+  const unitPrice = showUnitPrice ? getUnitPrice(p) : null;
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -117,6 +132,7 @@ export function ProductCard({ product: p, locale, onAdd, onView }: ProductCardPr
           src={p.img}
           alt={p.nameEN}
           loading="lazy"
+          decoding="async"
           className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
           onError={e => {
             (e.target as HTMLImageElement).src =
@@ -192,14 +208,19 @@ export function ProductCard({ product: p, locale, onAdd, onView }: ProductCardPr
           <HalalBadge tier={p.halalTier} locale={locale} />
         </div>
 
-        {/* Price Row: Tax-inclusive */}
-        <div className="flex items-baseline gap-1.5 mt-auto pt-2 border-t border-[#E1E6E2]/60">
-          <span className="text-sm sm:text-base font-extrabold text-[#202824]">
+        {/* Price Row: Tax-inclusive and Unit Price */}
+        <div className="flex flex-wrap items-baseline gap-1 mt-auto pt-2 border-t border-[#E1E6E2]/60">
+          <span className="text-sm sm:text-base font-extrabold text-[#202824] whitespace-nowrap">
             ¥{p.price.toLocaleString()}
           </span>
-          <span className="text-[10px] text-[#59635D]">（税込）</span>
+          <span className="text-[10px] text-[#59635D] whitespace-nowrap">（税込）</span>
+          {unitPrice && (
+            <span className="text-[10px] text-[#12633D] font-bold bg-[#DCFCE7] px-1.5 py-0.5 rounded border border-[#86efac]/80 whitespace-nowrap">
+              {unitPrice}
+            </span>
+          )}
           {p.comparePrice && p.comparePrice > p.price && (
-            <span className="text-[10px] text-[#59635D] line-through ml-auto">
+            <span className="text-[10px] text-[#59635D] line-through ml-auto whitespace-nowrap">
               ¥{p.comparePrice.toLocaleString()}
             </span>
           )}

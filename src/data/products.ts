@@ -48,53 +48,82 @@ export interface MainCategory {
   descriptionJa: string;
 }
 
+export function isFamilyOrBulk(p: Product): boolean {
+  const n = (p.nameEN + " " + p.nameJA + " " + (p.weight || "")).toLowerCase();
+  const isLargeRiceOrFlour =
+    n.includes("5kg") || n.includes("10kg") || n.includes("5 kg") || n.includes("10 kg");
+  const isLargeOil =
+    (n.includes("oil") || n.includes("ghee")) &&
+    (n.includes("5l") || n.includes("5litter") || n.includes("5 l") || n.includes("2l") || n.includes("1l") || n.includes("1litter") || n.includes("1000ml"));
+  const isLargeMeat =
+    p.category === "Meat & Fish" &&
+    (n.includes("1kg") || n.includes("1 kg") || n.includes("900g") || n.includes("800g"));
+  const isLargeLentil =
+    p.subcategory === "Lentils and Beans" &&
+    (n.includes("1kg") || n.includes("1 kg") || n.includes("2kg") || n.includes("5kg"));
+  const isMultiPack =
+    p.storage === "frozen" &&
+    (n.includes("10pcs") || n.includes("10枚") || n.includes("6pcs") || n.includes("5pcs") || n.includes("20pcs") || n.includes("30pcs"));
+
+  return Boolean(isLargeRiceOrFlour || isLargeOil || isLargeMeat || isLargeLentil || isMultiPack);
+}
+
+export function getUnitPrice(p: Product): string | null {
+  const n = (p.nameEN + " " + p.nameJA + " " + (p.weight || "")).toLowerCase();
+  const price = p.price;
+  if (n.includes("10kg") || n.includes("10 kg")) return `¥${Math.round(price / 10).toLocaleString()}/kg`;
+  if (n.includes("5kg") || n.includes("5 kg")) return `¥${Math.round(price / 5).toLocaleString()}/kg`;
+  if (n.includes("2kg") || n.includes("2 kg")) return `¥${Math.round(price / 2).toLocaleString()}/kg`;
+  if (n.includes("1kg") || n.includes("1 kg")) return `¥${Math.round(price).toLocaleString()}/kg`;
+  if (n.includes("5litter") || n.includes("5l") || n.includes("5 l")) return `¥${Math.round(price / 5).toLocaleString()}/L`;
+  if (n.includes("1litter") || n.includes("1l") || n.includes("1 l")) return `¥${Math.round(price).toLocaleString()}/L`;
+  if (n.includes("10pcs") || n.includes("10枚")) return `¥${Math.round(price / 10).toLocaleString()}/枚`;
+  if (n.includes("6pcs")) return `¥${Math.round(price / 6).toLocaleString()}/枚`;
+  if (n.includes("5pcs")) return `¥${Math.round(price / 5).toLocaleString()}/枚`;
+  return null;
+}
+
 export function matchCategory(p: Product, catId: string): boolean {
   if (!catId || catId === "all") return true;
-  const cat = (p.category || "").toLowerCase();
-  const sub = (p.subcategory || "").toLowerCase();
   const name = (p.nameEN || "").toLowerCase();
-  const storage = p.storage;
 
   if (catId === "deals" || catId === "deal" || catId === "お買い得") {
     return Boolean(p.comparePrice && p.comparePrice > p.price);
   }
+  if (catId === "family" || catId === "bulk" || catId === "ファミリー・まとめ買い") {
+    return isFamilyOrBulk(p);
+  }
+  if (catId === "under500" || catId === "500円以下") {
+    return p.price <= 500;
+  }
+  if (catId === "new_restocked" || catId === "new" || catId === "新入荷・再入荷") {
+    return Boolean(p.isNew || p.isRestocked);
+  }
   if (catId === "meat_fish" || catId === "meat" || catId === "肉・魚") {
-    return (
-      cat === "meat & fish" ||
-      cat.includes("meat") ||
-      ["mutton", "beef", "chicken", "goat", "fish", "duck"].includes(sub) ||
-      ["chicken", "mutton", "beef", "goat", "fish", "prawn", "shrimp", "hilsha", "ruhi"].some(k => name.includes(k))
-    );
+    return p.category === "Meat & Fish";
   }
   if (catId === "frozen" || catId === "冷凍食品") {
-    const isMeatFish =
-      cat === "meat & fish" ||
-      ["mutton", "beef", "chicken", "goat", "fish", "duck"].includes(sub);
-    return !isMeatFish && (
-      storage === "frozen" ||
-      cat === "frozen food" ||
-      sub.includes("frozen") ||
-      ["paratha", "puri", "singara", "samosa", "roti"].some(k => name.includes(k))
+    return (
+      p.category !== "Meat & Fish" &&
+      (p.category === "Frozen food" ||
+        p.category === "Frozen Foods" ||
+        (p.storage === "frozen" && p.category !== "Grocery"))
     );
   }
   if (catId === "rice_flour" || catId === "rice" || catId === "米・粉") {
     return (
-      ["rice", "flour"].some(k => sub.includes(k)) ||
-      ["rice", "basmati", "atta", "flour", "suji", "maida"].some(k => name.includes(k))
-    );
-  }
-  if (catId === "spices" || catId === "スパイス") {
-    return (
-      ["masala", "spice"].some(k => sub.includes(k)) ||
-      cat === "spices & seasoning" ||
-      ["masala", "curry powder", "cumin", "coriander", "turmeric", "chilli powder", "black pepper", "cardamom", "cinnamon", "clove"].some(k => name.includes(k))
+      p.subcategory === "Rice and Flours" ||
+      (p.category !== "Meat & Fish" &&
+        p.category !== "Frozen food" &&
+        p.category !== "Frozen Foods" &&
+        (name.includes("basmati") || name.includes("atta") || name.includes("flour") || name.includes("rice")))
     );
   }
   if (catId === "beans" || catId === "lentils" || catId === "豆類") {
-    return (
-      ["lentils", "beans"].some(k => sub.includes(k)) ||
-      ["dal", "dhal", "chana", "lentil", "beans", "chickpeas", "gram"].some(k => name.includes(k))
-    );
+    return p.subcategory === "Lentils and Beans";
+  }
+  if (catId === "spices" || catId === "スパイス") {
+    return p.subcategory === "Masala & spices" || p.category === "Spices & Seasoning";
   }
   if (catId === "others" || catId === "その他") {
     return (
@@ -158,6 +187,16 @@ export const MAIN_CATEGORIES: MainCategory[] = [
     count: ALL_PRODUCTS.filter(p => matchCategory(p, "beans")).length,
     subcategories: ["Masoor Dal", "Moong Dal", "Chana Dal", "Urad Dal", "Chickpeas"],
     descriptionJa: "マスール豆、ムング豆、チャナダール、ひよこ豆。豊富な食物繊維と植物性タンパク質。",
+  },
+  {
+    id: "family",
+    ja: "ファミリー・まとめ買い",
+    en: "Family & Bulk",
+    bn: "পারিবারিক ও পাইকারি",
+    icon: "👨‍👩‍👧‍👦",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "family")).length,
+    subcategories: ["5kg/10kg Rice", "10kg Atta", "5L Oil", "1kg Meats", "Multipack Frozen"],
+    descriptionJa: "ご家族の毎日の食卓に。大容量のお米、お肉、食用油、まとめ買い向け商品。",
   },
   {
     id: "others",
@@ -306,7 +345,7 @@ export const FAMILY_BUNDLES = [
 
 // Section 14: Recipes
 export const RECIPES = [
-  { name: "Chicken Biryani",   nameJA: "チキンビリヤニ",  nameBN: "চিকেন বিরিয়ানি", img: "https://images.unsplash.com/photo-1563379091339-03246963d651?w=300&h=200&fit=crop&auto=format", time: "45 min", items: 8 },
+  { name: "Chicken Biryani",   nameJA: "チキンビリヤニ",  nameBN: "চিকেন বিরিয়ানি", img: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&h=300&fit=crop&auto=format", time: "45 min", items: 8 },
   { name: "Beef Curry",        nameJA: "ビーフカレー",    nameBN: "গরুর মাংসের ভুনা", img: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=300&h=200&fit=crop&auto=format", time: "40 min", items: 10 },
   { name: "Dal Tadka",         nameJA: "ダルタルカ",      nameBN: "ডাল তরকা",        img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300&h=200&fit=crop&auto=format", time: "30 min", items: 7 },
   { name: "Chicken Tikka",     nameJA: "チキンティッカ",  nameBN: "চিকেন টিক্কা",      img: "https://images.unsplash.com/photo-1529563021893-cc83c992d75d?w=300&h=200&fit=crop&auto=format", time: "35 min", items: 9 },

@@ -123,168 +123,202 @@ export function Header({
       </div>
 
       {/* Main Header Bar */}
-      <div className="max-w-screen-xl mx-auto px-4 py-3 flex items-center gap-3 sm:gap-6">
-        {/* Brand Logo & Descriptor */}
-        <button
-          onClick={() => {
-            setSelectedCategory("all");
-            setSearchQuery("");
-            setInputValue("");
-            setView("home");
-          }}
-          className="flex items-center gap-2.5 shrink-0 text-left cursor-pointer group"
-        >
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#12633D] text-white flex items-center justify-center font-extrabold text-base shadow-xs group-hover:scale-105 transition-transform">
-            <span>☪</span>
-          </div>
-          <div>
-            <div className="text-lg sm:text-xl font-extrabold tracking-tight text-[#12633D] leading-none">
-              Beticrom
-            </div>
-            <div className="text-[10px] sm:text-[11px] text-[#59635D] font-medium leading-none mt-1">
-              ハラール食品・スパイス・世界の食材
-            </div>
-          </div>
-        </button>
-
-        {/* Wide Product Search with Enter-to-search & Autocomplete */}
-        <div ref={searchContainerRef} className="flex-1 max-w-2xl relative">
-          <form onSubmit={handleSearchSubmit} className="relative">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#59635D] pointer-events-none" />
-            <input
-              type="text"
-              value={inputValue}
-              onChange={e => {
-                setInputValue(e.target.value);
-                setSearchFocused(true);
+      <div className="max-w-screen-xl mx-auto px-4 py-2.5 sm:py-3">
+        <div className="flex flex-col md:flex-row md:items-center gap-2.5 sm:gap-4 lg:gap-6">
+          {/* Top Row on mobile / Left group on desktop */}
+          <div className="flex items-center justify-between gap-3 shrink-0">
+            {/* Brand Logo & Descriptor */}
+            <button
+              onClick={() => {
+                setSelectedCategory("all");
+                setSearchQuery("");
+                setInputValue("");
+                setView("home");
               }}
-              onFocus={() => setSearchFocused(true)}
-              onKeyDown={e => {
-                if (e.key === "Enter") {
-                  handleSearchSubmit();
-                }
-              }}
-              placeholder={
-                locale === "JA"
-                  ? "商品名・ブランド名で検索（例: マトン, バスマティ, Shan）"
-                  : locale === "BN"
-                  ? "পণ্য বা ব্র্যান্ড খুঁজুন (যেমন: মাটন, বাসমতি, শান)"
-                  : "Search by product or brand (e.g. Mutton, Basmati, Shan)..."
-              }
-              className="w-full pl-10 pr-10 py-2 sm:py-2.5 rounded-xl border border-[#E1E6E2] text-xs sm:text-sm bg-[#F7F8F5] focus:bg-white focus:border-[#12633D] outline-none transition-all shadow-xs"
-            />
-            {inputValue && (
-              <button
-                type="button"
-                onClick={() => {
-                  setInputValue("");
-                  setSearchQuery("");
-                }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#59635D] hover:text-[#202824] cursor-pointer"
-              >
-                <X size={14} />
-              </button>
-            )}
-          </form>
-
-          {/* Autocomplete Dropdown */}
-          {searchFocused && suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E1E6E2] rounded-xl shadow-xl overflow-hidden z-50 divide-y divide-[#E1E6E2]">
-              <div className="px-3 py-1.5 bg-[#F7F8F5] text-[10px] font-bold text-[#59635D] flex justify-between items-center">
-                <span>{locale === "JA" ? "検索候補" : "Search Suggestions"}</span>
-                <span>Enterキーで全件表示</span>
+              className="flex items-center gap-2.5 shrink-0 text-left cursor-pointer group"
+            >
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#12633D] text-white flex items-center justify-center font-extrabold text-base shadow-xs group-hover:scale-105 transition-transform">
+                <span>☪</span>
               </div>
-              {suggestions.map(p => (
-                <div
-                  key={p.id}
-                  onClick={() => {
-                    onSelectProduct(p.id);
-                    setSearchFocused(false);
-                    setView("pdp");
-                  }}
-                  className="flex items-center gap-3 p-2.5 hover:bg-[#F7F8F5] cursor-pointer transition-colors"
-                >
-                  <img
-                    src={p.img}
-                    alt={p.nameEN}
-                    className="w-10 h-10 rounded-lg object-contain bg-white border border-[#E1E6E2] p-0.5 shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold text-[#202824] truncate">
-                      {locale === "JA" ? p.nameJA : locale === "BN" ? p.nameBN : p.nameEN}
-                    </p>
-                    <div className="flex items-center gap-2 mt-0.5 text-[11px]">
-                      <span className="font-extrabold text-[#12633D]">¥{p.price.toLocaleString()}（税込）</span>
-                      <span className="text-[#59635D] text-[10px]">{p.brand}</span>
-                    </div>
-                  </div>
-                  <ChevronRight size={14} className="text-[#59635D] shrink-0" />
+              <div>
+                <div className="text-lg sm:text-xl font-extrabold tracking-tight text-[#12633D] leading-none">
+                  Beticrom
                 </div>
-              ))}
-              <div
-                onClick={() => handleSearchSubmit()}
-                className="p-2.5 bg-emerald-50/50 hover:bg-emerald-50 text-center text-xs font-bold text-[#12633D] cursor-pointer transition-colors"
-              >
-                「{inputValue}」の全検索結果を見る →
+                <div className="text-[10px] sm:text-[11px] text-[#59635D] font-medium leading-none mt-1">
+                  ハラール食品・スパイス・世界の食材
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            </button>
 
-        {/* Right Navigation Actions */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Trilingual Selector */}
-          <div className="flex items-center border border-[#E1E6E2] rounded-lg overflow-hidden text-[11px] font-bold bg-white shadow-xs">
-            {(["JA", "EN", "BN"] as Locale[]).map(l => (
+            {/* Mobile Actions (Language + Cart) */}
+            <div className="flex md:hidden items-center gap-2">
+              <div className="flex items-center border border-[#E1E6E2] rounded-lg overflow-hidden text-[10px] font-bold bg-white shadow-xs">
+                {(["JA", "EN", "BN"] as Locale[]).map(l => (
+                  <button
+                    key={l}
+                    onClick={() => setLocale(l)}
+                    className={`px-1.5 py-1 transition-colors cursor-pointer ${
+                      locale === l ? "bg-[#12633D] text-white" : "text-[#59635D] hover:bg-[#F7F8F5]"
+                    }`}
+                  >
+                    {l === "JA" ? "JP" : l === "BN" ? "বাংলা" : "EN"}
+                  </button>
+                ))}
+              </div>
+
               <button
-                key={l}
-                onClick={() => setLocale(l)}
-                className={`px-2 sm:px-2.5 py-1.5 transition-colors cursor-pointer ${
-                  locale === l ? "bg-[#12633D] text-white" : "text-[#59635D] hover:bg-[#F7F8F5]"
+                onClick={() => setView("cart")}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-white font-bold text-xs shadow-xs cursor-pointer ${
+                  view === "cart" ? "bg-[#0b4f2a]" : "bg-[#12633D]"
                 }`}
               >
-                {l === "JA" ? "JP" : l === "BN" ? "বাংলা" : "EN"}
+                <ShoppingCart size={14} />
+                <span className="w-4 h-4 rounded-full text-[10px] font-extrabold flex items-center justify-center bg-white text-[#12633D]">
+                  {cartCount}
+                </span>
               </button>
-            ))}
+            </div>
           </div>
 
-          {/* User Guide (Desktop) */}
-          <button
-            onClick={() => onOpenLegal("guide")}
-            className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#E1E6E2] text-xs font-semibold text-[#202824] hover:bg-[#F7F8F5] transition-colors cursor-pointer"
-          >
-            <HelpCircle size={14} className="text-[#12633D]" />
-            <span>{locale === "JA" ? "ご利用ガイド" : locale === "BN" ? "ব্যবহারবিধি" : "Guide"}</span>
-          </button>
+          {/* Wide Product Search with Enter-to-search & Autocomplete */}
+          <div ref={searchContainerRef} className="flex-1 w-full max-w-2xl relative">
+            <form onSubmit={handleSearchSubmit} className="relative">
+              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#59635D] pointer-events-none" />
+              <input
+                type="text"
+                value={inputValue}
+                onChange={e => {
+                  setInputValue(e.target.value);
+                  setSearchFocused(true);
+                }}
+                onFocus={() => setSearchFocused(true)}
+                onKeyDown={e => {
+                  if (e.key === "Enter") {
+                    handleSearchSubmit();
+                  }
+                }}
+                placeholder={
+                  locale === "JA"
+                    ? "商品名・ブランド名で検索（例: マトン, バスマティ, Shan）"
+                    : locale === "BN"
+                    ? "পণ্য বা ব্র্যান্ড খুঁজুন (যেমন: মাটন, বাসমতি, শান)"
+                    : "Search by product or brand (e.g. Mutton, Basmati, Shan)..."
+                }
+                className="w-full pl-10 pr-10 py-2 sm:py-2.5 rounded-xl border border-[#E1E6E2] text-xs sm:text-sm bg-[#F7F8F5] focus:bg-white focus:border-[#12633D] outline-none transition-all shadow-xs"
+              />
+              {inputValue && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInputValue("");
+                    setSearchQuery("");
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#59635D] hover:text-[#202824] cursor-pointer"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </form>
 
-          {/* My Page / Account */}
-          <button
-            onClick={() => setView("account")}
-            className={`hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${
-              view === "account"
-                ? "bg-[#12633D] text-white border-[#12633D]"
-                : "border-[#E1E6E2] text-[#202824] hover:bg-[#F7F8F5]"
-            }`}
-          >
-            <User size={14} />
-            <span>{locale === "JA" ? "マイページ" : locale === "BN" ? "অ্যাকাউন্ট" : "My Page"}</span>
-          </button>
+            {/* Autocomplete Dropdown */}
+            {searchFocused && suggestions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E1E6E2] rounded-xl shadow-xl overflow-hidden z-50 divide-y divide-[#E1E6E2]">
+                <div className="px-3 py-1.5 bg-[#F7F8F5] text-[10px] font-bold text-[#59635D] flex justify-between items-center">
+                  <span>{locale === "JA" ? "検索候補" : "Search Suggestions"}</span>
+                  <span>Enterキーで全件表示</span>
+                </div>
+                {suggestions.map(p => (
+                  <div
+                    key={p.id}
+                    onClick={() => {
+                      onSelectProduct(p.id);
+                      setSearchFocused(false);
+                      setView("pdp");
+                    }}
+                    className="flex items-center gap-3 p-2.5 hover:bg-[#F7F8F5] cursor-pointer transition-colors"
+                  >
+                    <img
+                      src={p.img}
+                      alt={p.nameEN}
+                      className="w-10 h-10 rounded-lg object-contain bg-white border border-[#E1E6E2] p-0.5 shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold text-[#202824] truncate">
+                        {locale === "JA" ? p.nameJA : locale === "BN" ? p.nameBN : p.nameEN}
+                      </p>
+                      <div className="flex items-center gap-2 mt-0.5 text-[11px]">
+                        <span className="font-extrabold text-[#12633D]">¥{p.price.toLocaleString()}（税込）</span>
+                        <span className="text-[#59635D] text-[10px]">{p.brand}</span>
+                      </div>
+                    </div>
+                    <ChevronRight size={14} className="text-[#59635D] shrink-0" />
+                  </div>
+                ))}
+                <div
+                  onClick={() => handleSearchSubmit()}
+                  className="p-2.5 bg-emerald-50/50 hover:bg-emerald-50 text-center text-xs font-bold text-[#12633D] cursor-pointer transition-colors"
+                >
+                  「{inputValue}」の全検索結果を見る →
+                </div>
+              </div>
+            )}
+          </div>
 
-          {/* Cart Button */}
-          <button
-            onClick={() => setView("cart")}
-            className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-white font-bold text-xs sm:text-sm shadow-xs transition-opacity cursor-pointer ${
-              view === "cart" ? "bg-[#0b4f2a]" : "bg-[#12633D] hover:opacity-95"
-            }`}
-          >
-            <ShoppingCart size={16} />
-            <span className="hidden sm:inline">
-              {locale === "JA" ? "カート" : locale === "BN" ? "কার্ট" : "Cart"}
-            </span>
-            <span className="w-5 h-5 rounded-full text-[10px] font-extrabold flex items-center justify-center bg-white text-[#12633D]">
-              {cartCount}
-            </span>
-          </button>
+          {/* Desktop Right Navigation Actions */}
+          <div className="hidden md:flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Trilingual Selector */}
+            <div className="flex items-center border border-[#E1E6E2] rounded-lg overflow-hidden text-[11px] font-bold bg-white shadow-xs">
+              {(["JA", "EN", "BN"] as Locale[]).map(l => (
+                <button
+                  key={l}
+                  onClick={() => setLocale(l)}
+                  className={`px-2 sm:px-2.5 py-1.5 transition-colors cursor-pointer ${
+                    locale === l ? "bg-[#12633D] text-white" : "text-[#59635D] hover:bg-[#F7F8F5]"
+                  }`}
+                >
+                  {l === "JA" ? "JP" : l === "BN" ? "বাংলা" : "EN"}
+                </button>
+              ))}
+            </div>
+
+            {/* User Guide (Desktop) */}
+            <button
+              onClick={() => onOpenLegal("guide")}
+              className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#E1E6E2] text-xs font-semibold text-[#202824] hover:bg-[#F7F8F5] transition-colors cursor-pointer"
+            >
+              <HelpCircle size={14} className="text-[#12633D]" />
+              <span>{locale === "JA" ? "ご利用ガイド" : locale === "BN" ? "ব্যবহারবিধি" : "Guide"}</span>
+            </button>
+
+            {/* My Page / Account */}
+            <button
+              onClick={() => setView("account")}
+              className={`hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${
+                view === "account"
+                  ? "bg-[#12633D] text-white border-[#12633D]"
+                  : "border-[#E1E6E2] text-[#202824] hover:bg-[#F7F8F5]"
+              }`}
+            >
+              <User size={14} />
+              <span>{locale === "JA" ? "マイページ" : locale === "BN" ? "অ্যাকাউন্ট" : "My Page"}</span>
+            </button>
+
+            {/* Cart Button */}
+            <button
+              onClick={() => setView("cart")}
+              className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-white font-bold text-xs sm:text-sm shadow-xs transition-opacity cursor-pointer ${
+                view === "cart" ? "bg-[#0b4f2a]" : "bg-[#12633D] hover:opacity-95"
+              }`}
+            >
+              <ShoppingCart size={16} />
+              <span className="hidden sm:inline">
+                {locale === "JA" ? "カート" : locale === "BN" ? "কার্ট" : "Cart"}
+              </span>
+              <span className="w-5 h-5 rounded-full text-[10px] font-extrabold flex items-center justify-center bg-white text-[#12633D]">
+                {cartCount}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
