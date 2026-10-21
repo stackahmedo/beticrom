@@ -1,7 +1,7 @@
 import rawProducts from "./products.json";
 
 export type Locale = "JA" | "EN" | "BN";
-export type HalalTier = "certified" | "supplier" | "nopork";
+export type HalalTier = "certified" | "supplier" | "nopork" | "not_halal";
 export type StorageType = "frozen" | "dry" | "cool";
 
 export interface Product {
@@ -29,32 +29,160 @@ export interface Product {
   isRestocked?: boolean;
   isUnder500?: boolean;
   isDeal?: boolean;
-  description?: string;
+  desc?: string;
+  origin?: string;
+  weight?: string;
 }
 
 export const ALL_PRODUCTS: Product[] = rawProducts as Product[];
 
-// ─── Categories (with real counts from catalog) ──────────────────────────────
-export const CATEGORIES = [
-  { id: "meat",      en: "Halal Meat",            ja: "ハラール肉",     bn: "হালাল মাংস",        count: ALL_PRODUCTS.filter(p => p.category === "Meat & Fish" && p.storage === "frozen").length, img: "https://images.unsplash.com/photo-1529563021893-cc83c992d75d?w=120&h=90&fit=crop&auto=format", bg: "#FFF0F0" },
-  { id: "frozen",    en: "Frozen Foods",          ja: "冷凍食品",       bn: "হিমায়িত খাবার",    count: ALL_PRODUCTS.filter(p => p.storage === "frozen").length, img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=120&h=90&fit=crop&auto=format", bg: "#EBF5FF" },
-  { id: "rice",      en: "Rice & Flour",          ja: "米・粉",         bn: "চাল ও আটা",         count: ALL_PRODUCTS.filter(p => p.subcategory.includes("Rice") || p.subcategory.includes("Flour")).length || 45, img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=120&h=90&fit=crop&auto=format", bg: "#FFFBF0" },
-  { id: "spices",    en: "Spices & Masala",       ja: "スパイス",       bn: "মশলা",              count: ALL_PRODUCTS.filter(p => p.subcategory.includes("Masala") || p.subcategory.includes("spice")).length || 380, img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=120&h=90&fit=crop&auto=format", bg: "#FFF3E0" },
-  { id: "lentils",   en: "Lentils & Beans",       ja: "豆類",           bn: "ডাল ও মটরশুটি",    count: ALL_PRODUCTS.filter(p => p.subcategory.includes("Lentils") || p.subcategory.includes("Beans")).length || 22, img: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=120&h=90&fit=crop&auto=format", bg: "#FFF8ED" },
-  { id: "oil",       en: "Oil & Ghee",            ja: "油・ギー",       bn: "তেল ও ঘি",          count: ALL_PRODUCTS.filter(p => p.subcategory.includes("oil") || p.subcategory.includes("Ghee")).length || 14, img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=120&h=90&fit=crop&auto=format", bg: "#FFFFF0" },
-  { id: "snacks",    en: "Snacks",                ja: "スナック",       bn: "স্ন্যাকস",          count: ALL_PRODUCTS.filter(p => p.subcategory.includes("Snacks")).length || 97, img: "https://images.unsplash.com/photo-1575448985741-0c3ddb28d44b?w=120&h=90&fit=crop&auto=format", bg: "#F5F0FF" },
-  { id: "drinks",    en: "Drinks",                ja: "飲み物",         bn: "পানীয়",            count: ALL_PRODUCTS.filter(p => p.category === "Beverage" || p.subcategory.includes("Drink")).length || 28, img: "https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=120&h=90&fit=crop&auto=format", bg: "#EDFFF5" },
-  { id: "sweets",    en: "Sweets & Desserts",     ja: "お菓子・デザート",bn: "মিষ্টি",           count: 29, img: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=120&h=90&fit=crop&auto=format", bg: "#FFF0FA" },
-  { id: "pickles",   en: "Pickles & Sauces",      ja: "漬物・ソース",   bn: "আচার ও সস",         count: ALL_PRODUCTS.filter(p => p.subcategory.includes("Pickles") || p.subcategory.includes("Paste")).length || 109, img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=120&h=90&fit=crop&auto=format", bg: "#F5FFE5" },
-  { id: "tea",       en: "Tea & Coffee",          ja: "お茶・コーヒー", bn: "চা ও কফি",          count: 27, img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=120&h=90&fit=crop&auto=format", bg: "#FFF8F0" },
-  { id: "ready",     en: "Ready-to-Eat",          ja: "レトルト・調理済",bn: "রেডি-টু-ইট",      count: ALL_PRODUCTS.filter(p => p.subcategory.includes("Ready")).length || 47, img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=120&h=90&fit=crop&auto=format", bg: "#F0FFF4" },
-  { id: "baby",      en: "Baby Products",         ja: "ベビー用品",     bn: "শিশু পণ্য",         count: 22, img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=120&h=90&fit=crop&auto=format", bg: "#FFF0FA" },
-  { id: "beauty",    en: "Beauty & Care",         ja: "美容・ケア",     bn: "সৌন্দর্য",          count: ALL_PRODUCTS.filter(p => p.category === "Beauty Products").length || 58, img: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=120&h=90&fit=crop&auto=format", bg: "#F0F0FF" },
-  { id: "cleaning",  en: "Cleaning & Essentials", ja: "日用品・洗剤",   bn: "পরিষ্কার পণ্য",     count: 18, img: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=120&h=90&fit=crop&auto=format", bg: "#F0F8FF" },
-  { id: "vegetables",en: "Fresh Vegetables",      ja: "新鮮野菜",       bn: "তাজা সবজি",         count: 31, img: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&h=90&fit=crop&auto=format", bg: "#EDFFF0" },
-  { id: "fish",      en: "Fish & Seafood",        ja: "魚・海産物",     bn: "মাছ ও সামুদ্রিক",  count: ALL_PRODUCTS.filter(p => p.subcategory.includes("Fish")).length || 27, img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=120&h=90&fit=crop&auto=format", bg: "#EBF5FF" },
-  { id: "parathas",  en: "Frozen Snacks",         ja: "冷凍スナック",   bn: "ফ্রোজেন স্ন্যাকস", count: 48, img: "https://images.unsplash.com/photo-1534422298391-e4f8c172789a?w=120&h=90&fit=crop&auto=format", bg: "#F0F8FF" },
+// ─── 7 Core Japanese E-Commerce Categories (Authoritative Taxonomy) ────────
+export interface MainCategory {
+  id: string;
+  ja: string;
+  en: string;
+  bn: string;
+  icon: string;
+  count: number;
+  subcategories: string[];
+  descriptionJa: string;
+}
+
+export function matchCategory(p: Product, catId: string): boolean {
+  if (!catId || catId === "all") return true;
+  const cat = (p.category || "").toLowerCase();
+  const sub = (p.subcategory || "").toLowerCase();
+  const name = (p.nameEN || "").toLowerCase();
+  const storage = p.storage;
+
+  if (catId === "deals" || catId === "deal" || catId === "お買い得") {
+    return Boolean(p.comparePrice && p.comparePrice > p.price);
+  }
+  if (catId === "meat_fish" || catId === "meat" || catId === "肉・魚") {
+    return (
+      cat === "meat & fish" ||
+      cat.includes("meat") ||
+      ["mutton", "beef", "chicken", "goat", "fish", "duck"].includes(sub) ||
+      ["chicken", "mutton", "beef", "goat", "fish", "prawn", "shrimp", "hilsha", "ruhi"].some(k => name.includes(k))
+    );
+  }
+  if (catId === "frozen" || catId === "冷凍食品") {
+    const isMeatFish =
+      cat === "meat & fish" ||
+      ["mutton", "beef", "chicken", "goat", "fish", "duck"].includes(sub);
+    return !isMeatFish && (
+      storage === "frozen" ||
+      cat === "frozen food" ||
+      sub.includes("frozen") ||
+      ["paratha", "puri", "singara", "samosa", "roti"].some(k => name.includes(k))
+    );
+  }
+  if (catId === "rice_flour" || catId === "rice" || catId === "米・粉") {
+    return (
+      ["rice", "flour"].some(k => sub.includes(k)) ||
+      ["rice", "basmati", "atta", "flour", "suji", "maida"].some(k => name.includes(k))
+    );
+  }
+  if (catId === "spices" || catId === "スパイス") {
+    return (
+      ["masala", "spice"].some(k => sub.includes(k)) ||
+      cat === "spices & seasoning" ||
+      ["masala", "curry powder", "cumin", "coriander", "turmeric", "chilli powder", "black pepper", "cardamom", "cinnamon", "clove"].some(k => name.includes(k))
+    );
+  }
+  if (catId === "beans" || catId === "lentils" || catId === "豆類") {
+    return (
+      ["lentils", "beans"].some(k => sub.includes(k)) ||
+      ["dal", "dhal", "chana", "lentil", "beans", "chickpeas", "gram"].some(k => name.includes(k))
+    );
+  }
+  if (catId === "others" || catId === "その他") {
+    return (
+      !matchCategory(p, "meat_fish") &&
+      !matchCategory(p, "frozen") &&
+      !matchCategory(p, "rice_flour") &&
+      !matchCategory(p, "spices") &&
+      !matchCategory(p, "beans")
+    );
+  }
+  return p.category === catId || p.subcategory === catId;
+}
+
+export const MAIN_CATEGORIES: MainCategory[] = [
+  {
+    id: "meat_fish",
+    ja: "肉・魚",
+    en: "Meat & Fish",
+    bn: "মাংস ও মাছ",
+    icon: "🥩",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "meat_fish")).length,
+    subcategories: ["Mutton", "Beef", "Chicken", "Goat", "Fish"],
+    descriptionJa: "ハラール認証の羊肉・牛肉・鶏肉・淡水魚。急速冷凍パックでお届け。",
+  },
+  {
+    id: "frozen",
+    ja: "冷凍食品",
+    en: "Frozen Foods",
+    bn: "হিমায়িত খাবার",
+    icon: "❄️",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "frozen")).length,
+    subcategories: ["Paratha", "Puri", "Samosa", "Singara", "Frozen Snacks"],
+    descriptionJa: "本場のパラタ、サモサ、シンガラ、冷凍惣菜。手軽に本格の味。",
+  },
+  {
+    id: "rice_flour",
+    ja: "米・粉",
+    en: "Rice & Flour",
+    bn: "চাল ও আটা",
+    icon: "🌾",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "rice_flour")).length,
+    subcategories: ["Basmati Rice", "Chinigura Rice", "Atta", "Chakki Fresh", "Suji"],
+    descriptionJa: "香り高い特選バスマティ米、チャパティ用全粒粉アタ、セモリナ粉。",
+  },
+  {
+    id: "spices",
+    ja: "スパイス",
+    en: "Spices & Masala",
+    bn: "মশলা",
+    icon: "🌶️",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "spices")).length,
+    subcategories: ["Curry Powder", "Garam Masala", "Biryani Mix", "Whole Spices", "Pastes"],
+    descriptionJa: "直輸入の本格ホールスパイス、パウダー、調合マサラ、ジンジャーペースト。",
+  },
+  {
+    id: "beans",
+    ja: "豆類",
+    en: "Lentils & Beans",
+    bn: "ডাল ও মটরশুটি",
+    icon: "🫘",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "beans")).length,
+    subcategories: ["Masoor Dal", "Moong Dal", "Chana Dal", "Urad Dal", "Chickpeas"],
+    descriptionJa: "マスール豆、ムング豆、チャナダール、ひよこ豆。豊富な食物繊維と植物性タンパク質。",
+  },
+  {
+    id: "others",
+    ja: "その他",
+    en: "Other Groceries",
+    bn: "অন্যান্য খাদ্যদ্রব্য",
+    icon: "🛒",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "others")).length,
+    subcategories: ["Oils & Ghee", "Snacks", "Tea & Coffee", "Beverages", "Sweets"],
+    descriptionJa: "マスタードオイル、純ギー、伝統菓子スナック、チャイ紅茶、日用調味料。",
+  },
+  {
+    id: "deals",
+    ja: "お買い得",
+    en: "Weekly Deals",
+    bn: "বিশেষ অফার",
+    icon: "🏷️",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "deals")).length,
+    subcategories: ["Flash Sale", "Bundle Deals", "Bulk Discounts"],
+    descriptionJa: "今週の特選割引商品。人気定番食材を特別価格でお届けします。",
+  },
 ];
+
+// ─── Legacy compatibility array ─────────────────────────────────────────────
+export const CATEGORIES = MAIN_CATEGORIES;
 
 // ─── Countries (14) ─────────────────────────────────────────────────────────
 export const COUNTRIES = [
@@ -76,24 +204,24 @@ export const COUNTRIES = [
 
 // ─── Brands (18) ────────────────────────────────────────────────────────────
 export const BRANDS = [
-  { name: "Ahmed",         color: "#D92D20", bg: "#FFF5F5" },
-  { name: "Shan",          color: "#11683A", bg: "#F0FFF4" },
+  { name: "Ahmed",         color: "#C92A2A", bg: "#FFF5F5" },
+  { name: "Shan",          color: "#12633D", bg: "#F7F8F5" },
   { name: "Radhuni",       color: "#C2410C", bg: "#FFF7ED" },
   { name: "PRAN",          color: "#D97706", bg: "#FFFBEB" },
+  { name: "Century",       color: "#12633D", bg: "#F7F8F5" },
+  { name: "Everest",       color: "#C92A2A", bg: "#FFF5F5" },
   { name: "Haldiram",      color: "#BE185D", bg: "#FDF2F8" },
   { name: "MDH",           color: "#1A6EA8", bg: "#EBF5FF" },
-  { name: "Kaalar",        color: "#11683A", bg: "#F0FFF4" },
+  { name: "Kaalar",        color: "#12633D", bg: "#F7F8F5" },
   { name: "Zeeba",         color: "#7C3AED", bg: "#F5F3FF" },
-  { name: "Fresh",         color: "#11683A", bg: "#F0FFF4" },
+  { name: "Fresh",         color: "#12633D", bg: "#F7F8F5" },
   { name: "Teer",          color: "#B45309", bg: "#FFFBEB" },
-  { name: "Bashundhara",   color: "#7C3AED", bg: "#F5F3FF" },
-  { name: "Rupchanda",     color: "#B45309", bg: "#FFFBEB" },
+  { name: "Paragon",       color: "#0369A1", bg: "#EBF5FF" },
   { name: "National",      color: "#7C3AED", bg: "#F5F3FF" },
-  { name: "Kazi Farms",    color: "#D92D20", bg: "#FFF5F5" },
+  { name: "Kazi Farms",    color: "#C92A2A", bg: "#FFF5F5" },
   { name: "Mehran",        color: "#0369A1", bg: "#EBF5FF" },
-  { name: "Laziza",        color: "#11683A", bg: "#F0FFF4" },
-  { name: "Bombay Sweets", color: "#D97706", bg: "#FFFBEB" },
-  { name: "Beticorm",      color: "#11683A", bg: "#F0FFF4" },
+  { name: "Laziza",        color: "#12633D", bg: "#F7F8F5" },
+  { name: "Beticrom",      color: "#12633D", bg: "#F7F8F5" },
 ];
 
 // ─── Curated Sections for Storefront ────────────────────────────────────────

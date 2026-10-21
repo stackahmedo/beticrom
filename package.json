@@ -1,8 +1,8 @@
 {
-  "name": "beticorm-halal-market",
+  "name": "beticrom-japan",
   "private": true,
   "version": "1.0.0",
-  "description": "Beticorm Halal Market Japan - E-Commerce Web Application",
+  "description": "Beticrom Japan - Halal Food, Spices & World Groceries",
   "type": "module",
   "scripts": {
     "build": "vite build",
