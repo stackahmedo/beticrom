@@ -137,8 +137,12 @@ export function Header({
               }}
               className="flex items-center gap-2.5 shrink-0 text-left cursor-pointer group"
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#12633D] text-white flex items-center justify-center font-extrabold text-base shadow-xs group-hover:scale-105 transition-transform">
-                <span>☪</span>
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border border-[#E1E6E2] p-1 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
+                <img
+                  src="/beticrom-logo.png"
+                  alt="Beticrom Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
                 <div className="text-lg sm:text-xl font-extrabold tracking-tight text-[#12633D] leading-none">

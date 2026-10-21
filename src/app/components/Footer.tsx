@@ -78,8 +78,12 @@ export function Footer({
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#12633D] text-white flex items-center justify-center font-extrabold text-sm shadow-xs">
-                ☪
+              <div className="w-9 h-9 rounded-xl bg-white border border-[#E1E6E2] p-0.5 flex items-center justify-center shadow-xs shrink-0">
+                <img
+                  src="/beticrom-logo.png"
+                  alt="Beticrom Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
                 <span className="font-extrabold text-base tracking-tight text-[#12633D]">
