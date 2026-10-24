@@ -9,6 +9,7 @@ import {
   type Locale,
 } from "../../data/products";
 import { HalalBadge, StorageBadge, ProductCard } from "./ProductCard";
+import { ProductCarousel } from "./ProductCarousel";
 import type { View, LegalTopic } from "../types";
 
 interface PDPPageProps {
@@ -462,21 +463,15 @@ export function PDPPage({
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {relatedProducts.map((rp, idx) => (
-              <ProductCard
-                key={rp.id}
-                index={idx}
-                product={rp}
-                locale={locale}
-                onAdd={(item) => onAdd(item)}
-                onView={() => {
-                  onSelectProduct(rp.id);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-              />
-            ))}
-          </div>
+          <ProductCarousel
+            products={relatedProducts}
+            locale={locale}
+            onAdd={item => onAdd(item)}
+            onViewProduct={id => {
+              onSelectProduct(id);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          />
         </div>
       )}
 

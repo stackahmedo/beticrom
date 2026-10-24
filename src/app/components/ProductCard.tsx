@@ -131,7 +131,7 @@ export function ProductCard({
     <div
       onClick={onView}
       style={staggerDelay ? { animationDelay: staggerDelay } : undefined}
-      className="bg-white rounded-xl border border-[#E1E6E2] overflow-hidden flex flex-col cursor-pointer transition-all duration-200 hover:shadow-md hover:border-[#12633D]/60 hover:-translate-y-1 group relative animate-slide-ltr will-change-transform"
+      className="bg-white rounded-xl border border-[#E1E6E2] overflow-hidden flex flex-col cursor-pointer transition-all duration-200 hover:shadow-md hover:border-[#12633D]/60 hover:-translate-y-1 group relative animate-slide-ltr will-change-transform h-full"
     >
       {/* Product Image Box with Left-to-Right Sheen on Hover */}
       <div className="relative aspect-square w-full bg-[#F7F8F5] p-3 flex items-center justify-center overflow-hidden">

@@ -27,6 +27,7 @@ import {
   type Locale,
 } from "../../data/products";
 import { ProductCard } from "./ProductCard";
+import { ProductCarousel } from "./ProductCarousel";
 import type { View, LegalTopic } from "../types";
 
 interface HomepageProps {
@@ -336,43 +337,15 @@ export function Homepage({
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-            {(expandedSections["deals"] ? sections.deals : sections.deals.slice(0, 8)).map((p, idx) => (
-              <ProductCard
-                key={p.id}
-                index={idx}
-                product={p}
-                locale={locale}
-                onAdd={onAdd}
-                onView={() => {
-                  onSelectProduct(p.id);
-                  setView("pdp");
-                }}
-              />
-            ))}
-          </div>
-
-          {sections.deals.length > 8 && (
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={() => toggleExpand("deals")}
-                className="px-4 py-1.5 rounded-lg border border-red-300 text-xs font-bold text-[#C92A2A] bg-white hover:bg-red-50 transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-              >
-                {expandedSections["deals"] ? (
-                  <>
-                    <span>閉じる</span>
-                    <ChevronUp size={14} />
-                  </>
-                ) : (
-                  <>
-                    <span>もっと見る ({sections.deals.length - 8}品)</span>
-                    <ChevronDown size={14} />
-                  </>
-                )}
-              </button>
-            </div>
-          )}
+          <ProductCarousel
+            products={sections.deals}
+            locale={locale}
+            onAdd={onAdd}
+            onViewProduct={id => {
+              onSelectProduct(id);
+              setView("pdp");
+            }}
+          />
         </div>
       </section>
 
@@ -406,43 +379,15 @@ export function Homepage({
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["recommended"] ? sections.recommended : sections.recommended.slice(0, 8)).map((p, idx) => (
-            <ProductCard
-              key={p.id}
-              index={idx}
-              product={p}
-              locale={locale}
-              onAdd={onAdd}
-              onView={() => {
-                onSelectProduct(p.id);
-                setView("pdp");
-              }}
-            />
-          ))}
-        </div>
-
-        {sections.recommended.length > 8 && (
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => toggleExpand("recommended")}
-              className="px-4 py-1.5 rounded-lg border border-[#E1E6E2] text-xs font-bold text-[#12633D] bg-white hover:bg-[#F7F8F5] transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-            >
-              {expandedSections["recommended"] ? (
-                <>
-                  <span>閉じる</span>
-                  <ChevronUp size={14} />
-                </>
-              ) : (
-                <>
-                  <span>もっと見る ({sections.recommended.length - 8}品)</span>
-                  <ChevronDown size={14} />
-                </>
-              )}
-            </button>
-          </div>
-        )}
+        <ProductCarousel
+          products={sections.recommended}
+          locale={locale}
+          onAdd={onAdd}
+          onViewProduct={id => {
+            onSelectProduct(id);
+            setView("pdp");
+          }}
+        />
       </section>
 
       {/* 7. ハラール肉・魚 — Halal Meat & Fish */}
@@ -475,43 +420,15 @@ export function Homepage({
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["meatFish"] ? sections.meatFish : sections.meatFish.slice(0, 8)).map((p, idx) => (
-            <ProductCard
-              key={p.id}
-              index={idx}
-              product={p}
-              locale={locale}
-              onAdd={onAdd}
-              onView={() => {
-                onSelectProduct(p.id);
-                setView("pdp");
-              }}
-            />
-          ))}
-        </div>
-
-        {sections.meatFish.length > 8 && (
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => toggleExpand("meatFish")}
-              className="px-4 py-1.5 rounded-lg border border-[#E1E6E2] text-xs font-bold text-[#12633D] bg-white hover:bg-[#F7F8F5] transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-            >
-              {expandedSections["meatFish"] ? (
-                <>
-                  <span>閉じる</span>
-                  <ChevronUp size={14} />
-                </>
-              ) : (
-                <>
-                  <span>もっと見る ({sections.meatFish.length - 8}品)</span>
-                  <ChevronDown size={14} />
-                </>
-              )}
-            </button>
-          </div>
-        )}
+        <ProductCarousel
+          products={sections.meatFish}
+          locale={locale}
+          onAdd={onAdd}
+          onViewProduct={id => {
+            onSelectProduct(id);
+            setView("pdp");
+          }}
+        />
       </section>
 
       {/* 8. 米・粉・豆類 — Rice, Flour & Lentils */}
@@ -544,43 +461,15 @@ export function Homepage({
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["riceFlourBeans"] ? sections.riceFlourBeans : sections.riceFlourBeans.slice(0, 8)).map((p, idx) => (
-            <ProductCard
-              key={p.id}
-              index={idx}
-              product={p}
-              locale={locale}
-              onAdd={onAdd}
-              onView={() => {
-                onSelectProduct(p.id);
-                setView("pdp");
-              }}
-            />
-          ))}
-        </div>
-
-        {sections.riceFlourBeans.length > 8 && (
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => toggleExpand("riceFlourBeans")}
-              className="px-4 py-1.5 rounded-lg border border-[#E1E6E2] text-xs font-bold text-[#12633D] bg-white hover:bg-[#F7F8F5] transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-            >
-              {expandedSections["riceFlourBeans"] ? (
-                <>
-                  <span>閉じる</span>
-                  <ChevronUp size={14} />
-                </>
-              ) : (
-                <>
-                  <span>もっと見る ({sections.riceFlourBeans.length - 8}品)</span>
-                  <ChevronDown size={14} />
-                </>
-              )}
-            </button>
-          </div>
-        )}
+        <ProductCarousel
+          products={sections.riceFlourBeans}
+          locale={locale}
+          onAdd={onAdd}
+          onViewProduct={id => {
+            onSelectProduct(id);
+            setView("pdp");
+          }}
+        />
       </section>
 
       {/* 9. ファミリー・まとめ買い — Family & Bulk Shopping (Immediately after Rice, Flour & Lentils) */}
@@ -614,44 +503,16 @@ export function Homepage({
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-            {(expandedSections["familyBulk"] ? sections.familyBulk : sections.familyBulk.slice(0, 8)).map((p, idx) => (
-              <ProductCard
-                key={p.id}
-                index={idx}
-                product={p}
-                locale={locale}
-                showUnitPrice={true}
-                onAdd={onAdd}
-                onView={() => {
-                  onSelectProduct(p.id);
-                  setView("pdp");
-                }}
-              />
-            ))}
-          </div>
-
-          {sections.familyBulk.length > 8 && (
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={() => toggleExpand("familyBulk")}
-                className="px-4 py-1.5 rounded-lg border border-emerald-400 text-xs font-bold text-[#12633D] bg-white hover:bg-emerald-50 transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-              >
-                {expandedSections["familyBulk"] ? (
-                  <>
-                    <span>閉じる</span>
-                    <ChevronUp size={14} />
-                  </>
-                ) : (
-                  <>
-                    <span>もっと見る ({sections.familyBulk.length - 8}品)</span>
-                    <ChevronDown size={14} />
-                  </>
-                )}
-              </button>
-            </div>
-          )}
+          <ProductCarousel
+            products={sections.familyBulk}
+            locale={locale}
+            showUnitPrice={true}
+            onAdd={onAdd}
+            onViewProduct={id => {
+              onSelectProduct(id);
+              setView("pdp");
+            }}
+          />
         </div>
       </section>
 
@@ -685,43 +546,15 @@ export function Homepage({
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["spices"] ? sections.spices : sections.spices.slice(0, 8)).map((p, idx) => (
-            <ProductCard
-              key={p.id}
-              index={idx}
-              product={p}
-              locale={locale}
-              onAdd={onAdd}
-              onView={() => {
-                onSelectProduct(p.id);
-                setView("pdp");
-              }}
-            />
-          ))}
-        </div>
-
-        {sections.spices.length > 8 && (
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => toggleExpand("spices")}
-              className="px-4 py-1.5 rounded-lg border border-[#E1E6E2] text-xs font-bold text-[#12633D] bg-white hover:bg-[#F7F8F5] transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-            >
-              {expandedSections["spices"] ? (
-                <>
-                  <span>閉じる</span>
-                  <ChevronUp size={14} />
-                </>
-              ) : (
-                <>
-                  <span>もっと見る ({sections.spices.length - 8}品)</span>
-                  <ChevronDown size={14} />
-                </>
-              )}
-            </button>
-          </div>
-        )}
+        <ProductCarousel
+          products={sections.spices}
+          locale={locale}
+          onAdd={onAdd}
+          onViewProduct={id => {
+            onSelectProduct(id);
+            setView("pdp");
+          }}
+        />
       </section>
 
       {/* 11. 冷凍食品 — Frozen Foods */}
@@ -754,43 +587,15 @@ export function Homepage({
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["frozen"] ? sections.frozen : sections.frozen.slice(0, 8)).map((p, idx) => (
-            <ProductCard
-              key={p.id}
-              index={idx}
-              product={p}
-              locale={locale}
-              onAdd={onAdd}
-              onView={() => {
-                onSelectProduct(p.id);
-                setView("pdp");
-              }}
-            />
-          ))}
-        </div>
-
-        {sections.frozen.length > 8 && (
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => toggleExpand("frozen")}
-              className="px-4 py-1.5 rounded-lg border border-[#E1E6E2] text-xs font-bold text-[#12633D] bg-white hover:bg-[#F7F8F5] transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-            >
-              {expandedSections["frozen"] ? (
-                <>
-                  <span>閉じる</span>
-                  <ChevronUp size={14} />
-                </>
-              ) : (
-                <>
-                  <span>もっと見る ({sections.frozen.length - 8}品)</span>
-                  <ChevronDown size={14} />
-                </>
-              )}
-            </button>
-          </div>
-        )}
+        <ProductCarousel
+          products={sections.frozen}
+          locale={locale}
+          onAdd={onAdd}
+          onViewProduct={id => {
+            onSelectProduct(id);
+            setView("pdp");
+          }}
+        />
       </section>
 
       {/* 12. 500円以下の商品 — Products ¥500 and Under */}
@@ -823,43 +628,15 @@ export function Homepage({
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["under500"] ? sections.under500 : sections.under500.slice(0, 8)).map((p, idx) => (
-            <ProductCard
-              key={p.id}
-              index={idx}
-              product={p}
-              locale={locale}
-              onAdd={onAdd}
-              onView={() => {
-                onSelectProduct(p.id);
-                setView("pdp");
-              }}
-            />
-          ))}
-        </div>
-
-        {sections.under500.length > 8 && (
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => toggleExpand("under500")}
-              className="px-4 py-1.5 rounded-lg border border-[#E1E6E2] text-xs font-bold text-[#12633D] bg-white hover:bg-[#F7F8F5] transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-            >
-              {expandedSections["under500"] ? (
-                <>
-                  <span>閉じる</span>
-                  <ChevronUp size={14} />
-                </>
-              ) : (
-                <>
-                  <span>もっと見る ({sections.under500.length - 8}品)</span>
-                  <ChevronDown size={14} />
-                </>
-              )}
-            </button>
-          </div>
-        )}
+        <ProductCarousel
+          products={sections.under500}
+          locale={locale}
+          onAdd={onAdd}
+          onViewProduct={id => {
+            onSelectProduct(id);
+            setView("pdp");
+          }}
+        />
       </section>
 
       {/* 13. 新入荷・再入荷 — New & Restocked */}
@@ -893,43 +670,15 @@ export function Homepage({
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-            {(expandedSections["newRestocked"] ? sections.newRestocked : sections.newRestocked.slice(0, 8)).map((p, idx) => (
-              <ProductCard
-                key={p.id}
-                index={idx}
-                product={p}
-                locale={locale}
-                onAdd={onAdd}
-                onView={() => {
-                  onSelectProduct(p.id);
-                  setView("pdp");
-                }}
-              />
-            ))}
-          </div>
-
-          {sections.newRestocked.length > 8 && (
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={() => toggleExpand("newRestocked")}
-                className="px-4 py-1.5 rounded-lg border border-[#E1E6E2] text-xs font-bold text-[#12633D] bg-white hover:bg-[#F7F8F5] transition-colors inline-flex items-center gap-1 cursor-pointer shadow-2xs"
-              >
-                {expandedSections["newRestocked"] ? (
-                  <>
-                    <span>閉じる</span>
-                    <ChevronUp size={14} />
-                  </>
-                ) : (
-                  <>
-                    <span>もっと見る ({sections.newRestocked.length - 8}品)</span>
-                    <ChevronDown size={14} />
-                  </>
-                )}
-              </button>
-            </div>
-          )}
+          <ProductCarousel
+            products={sections.newRestocked}
+            locale={locale}
+            onAdd={onAdd}
+            onViewProduct={id => {
+              onSelectProduct(id);
+              setView("pdp");
+            }}
+          />
         </section>
       )}
 
