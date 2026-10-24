@@ -14,6 +14,7 @@ interface ProductCardProps {
   onAdd: (product: Product) => void;
   onView: () => void;
   showUnitPrice?: boolean;
+  index?: number;
 }
 
 const HALAL_CONFIG: Record<
@@ -101,9 +102,11 @@ export function ProductCard({
   onAdd,
   onView,
   showUnitPrice = true,
+  index,
 }: ProductCardProps) {
   const [added, setAdded] = useState(false);
   const [wished, setWished] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const discountPercent =
     p.comparePrice && p.comparePrice > p.price
@@ -121,27 +124,47 @@ export function ProductCard({
 
   const displayName = locale === "JA" ? p.nameJA : locale === "BN" ? p.nameBN : p.nameEN;
 
+  // Stagger left-to-right entrance based on column index (capped at 5 to avoid long delays)
+  const staggerDelay = index !== undefined ? `${Math.min(index % 6, 5) * 35}ms` : undefined;
+
   return (
     <div
       onClick={onView}
-      className="bg-white rounded-xl border border-[#E1E6E2] overflow-hidden flex flex-col cursor-pointer transition-all duration-200 hover:shadow-md hover:border-[#12633D]/60 hover:-translate-y-0.5 group"
+      style={staggerDelay ? { animationDelay: staggerDelay } : undefined}
+      className="bg-white rounded-xl border border-[#E1E6E2] overflow-hidden flex flex-col cursor-pointer transition-all duration-200 hover:shadow-md hover:border-[#12633D]/60 hover:-translate-y-1 group relative animate-slide-ltr will-change-transform"
     >
-      {/* Product Image Box */}
+      {/* Product Image Box with Left-to-Right Sheen on Hover */}
       <div className="relative aspect-square w-full bg-[#F7F8F5] p-3 flex items-center justify-center overflow-hidden">
+        {/* Placeholder shimmer before image loads */}
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-[#F7F8F5] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full border-2 border-[#12633D]/20 border-t-[#12633D] animate-spin" />
+          </div>
+        )}
+
         <img
           src={p.img}
           alt={p.nameEN}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+          onLoad={() => setImageLoaded(true)}
+          className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-105 ${
+            imageLoaded ? "opacity-100" : "opacity-0"
+          }`}
           onError={e => {
             (e.target as HTMLImageElement).src =
               "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&h=400&fit=crop";
+            setImageLoaded(true);
           }}
         />
 
+        {/* Minimalistic Left-to-Right Light Sweep on Hover */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
+        </div>
+
         {/* Status Badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
+        <div className="absolute top-2 left-2 flex flex-col gap-1 z-10 transition-transform duration-200 group-hover:translate-x-0.5">
           {discountPercent > 0 && (
             <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md text-white bg-[#C92A2A] shadow-xs leading-none">
               -{discountPercent}%
@@ -171,18 +194,20 @@ export function ProductCard({
             e.stopPropagation();
             setWished(!wished);
           }}
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 border border-[#E1E6E2] flex items-center justify-center shadow-xs opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white z-10 cursor-pointer"
+          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 border border-[#E1E6E2] flex items-center justify-center shadow-xs opacity-0 group-hover:opacity-100 transition-all duration-150 hover:bg-white hover:scale-110 active:scale-95 z-10 cursor-pointer"
           aria-label="Wishlist"
         >
           <Heart size={13} className={wished ? "fill-[#C92A2A] text-[#C92A2A]" : "text-[#59635D]"} />
         </button>
       </div>
 
-      {/* Content Container */}
-      <div className="p-3 flex flex-col flex-1 gap-1.5">
+      {/* Content Container with Left-to-Right Entrance */}
+      <div className="p-3 flex flex-col flex-1 gap-1.5 transition-colors duration-200">
         {/* Brand & Weight/Size */}
         <div className="flex items-center justify-between text-[11px] text-[#59635D]">
-          <span className="font-semibold truncate max-w-[120px]">{p.brand}</span>
+          <span className="font-semibold truncate max-w-[120px] transition-colors group-hover:text-[#12633D]">
+            {p.brand}
+          </span>
           {p.weight && (
             <span className="shrink-0 font-medium px-1.5 py-0.2 bg-[#F7F8F5] rounded text-[10px]">
               {p.weight}
@@ -191,7 +216,7 @@ export function ProductCard({
         </div>
 
         {/* Primary Name (Japanese) */}
-        <h3 className="text-xs sm:text-sm font-bold text-[#202824] leading-snug line-clamp-2 min-h-[2.5rem]">
+        <h3 className="text-xs sm:text-sm font-bold text-[#202824] leading-snug line-clamp-2 min-h-[2.5rem] group-hover:text-[#12633D] transition-colors duration-150">
           {displayName}
         </h3>
 
@@ -210,7 +235,7 @@ export function ProductCard({
 
         {/* Price Row: Tax-inclusive and Unit Price */}
         <div className="flex flex-wrap items-baseline gap-1 mt-auto pt-2 border-t border-[#E1E6E2]/60">
-          <span className="text-sm sm:text-base font-extrabold text-[#202824] whitespace-nowrap">
+          <span className="text-sm sm:text-base font-extrabold text-[#202824] whitespace-nowrap transition-transform duration-150 group-hover:translate-x-0.5">
             ¥{p.price.toLocaleString()}
           </span>
           <span className="text-[10px] text-[#59635D] whitespace-nowrap">（税込）</span>
@@ -226,26 +251,29 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Add to Cart Button */}
+        {/* Add to Cart Button with Tactile Feedback */}
         <button
           type="button"
           onClick={handleAdd}
-          className={`w-full py-2 rounded-lg text-xs font-bold text-white transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer mt-1 ${
+          className={`w-full py-2 rounded-lg text-xs font-bold text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer mt-1 transition-all duration-150 active:scale-[0.96] ${
             added
-              ? "bg-[#0b4f2a]"
-              : "bg-[#12633D] hover:bg-[#0b4f2a] active:scale-[0.98]"
+              ? "bg-[#0b4f2a] ring-2 ring-[#0b4f2a]/30"
+              : "bg-[#12633D] hover:bg-[#0b4f2a] hover:shadow-xs"
           }`}
         >
           {added ? (
-            <>
-              <Check size={14} />
+            <div className="flex items-center gap-1 animate-content-ltr">
+              <Check size={14} className="animate-soft-pulse" />
               <span>{locale === "JA" ? "追加しました" : locale === "BN" ? "যোগ হয়েছে" : "Added!"}</span>
-            </>
+            </div>
           ) : (
             <span>{locale === "JA" ? "カートに入れる" : locale === "BN" ? "কার্টে যোগ করুন" : "Add to Cart"}</span>
           )}
         </button>
       </div>
+
+      {/* Sleek Left-to-Right Accent Line Expanding on Hover */}
+      <div className="h-[2px] w-full bg-gradient-to-r from-[#12633D] via-[#10B981] to-[#12633D] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left" />
     </div>
   );
 }

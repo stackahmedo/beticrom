@@ -231,7 +231,7 @@ export function Header({
                   <span>{locale === "JA" ? "検索候補" : "Search Suggestions"}</span>
                   <span>Enterキーで全件表示</span>
                 </div>
-                {suggestions.map(p => (
+                {suggestions.map((p, sIdx) => (
                   <div
                     key={p.id}
                     onClick={() => {
@@ -239,7 +239,8 @@ export function Header({
                       setSearchFocused(false);
                       setView("pdp");
                     }}
-                    className="flex items-center gap-3 p-2.5 hover:bg-[#F7F8F5] cursor-pointer transition-colors"
+                    style={{ animationDelay: `${sIdx * 30}ms` }}
+                    className="flex items-center gap-3 p-2.5 hover:bg-[#F7F8F5] cursor-pointer transition-colors animate-content-ltr"
                   >
                     <img
                       src={p.img}
@@ -310,15 +311,15 @@ export function Header({
             {/* Cart Button */}
             <button
               onClick={() => setView("cart")}
-              className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-white font-bold text-xs sm:text-sm shadow-xs transition-opacity cursor-pointer ${
-                view === "cart" ? "bg-[#0b4f2a]" : "bg-[#12633D] hover:opacity-95"
+              className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-white font-bold text-xs sm:text-sm shadow-xs transition-all duration-150 active:scale-95 cursor-pointer ${
+                view === "cart" ? "bg-[#0b4f2a]" : "bg-[#12633D] hover:bg-[#0b4f2a]"
               }`}
             >
               <ShoppingCart size={16} />
               <span className="hidden sm:inline">
                 {locale === "JA" ? "カート" : locale === "BN" ? "কার্ট" : "Cart"}
               </span>
-              <span className="w-5 h-5 rounded-full text-[10px] font-extrabold flex items-center justify-center bg-white text-[#12633D]">
+              <span className="w-5 h-5 rounded-full text-[10px] font-extrabold flex items-center justify-center bg-white text-[#12633D] transition-transform duration-200">
                 {cartCount}
               </span>
             </button>

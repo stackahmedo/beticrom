@@ -265,14 +265,15 @@ export function Homepage({
 
         {/* 8 Compact Category Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
-          {MAIN_CATEGORIES.map(cat => {
+          {MAIN_CATEGORIES.map((cat, catIdx) => {
             const isDeal = cat.id === "deals";
             const isFamily = cat.id === "family";
             return (
               <button
                 key={cat.id}
                 onClick={() => handleCategoryClick(cat.id)}
-                className={`p-3 rounded-xl border text-left transition-all hover:shadow-md hover:-translate-y-0.5 cursor-pointer flex flex-col justify-between group ${
+                style={{ animationDelay: `${catIdx * 25}ms` }}
+                className={`p-3 rounded-xl border text-left transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-pointer flex flex-col justify-between group animate-slide-ltr ${
                   isDeal
                     ? "bg-red-50/70 border-red-200 hover:border-[#C92A2A]"
                     : isFamily
@@ -281,10 +282,12 @@ export function Homepage({
                 }`}
               >
                 <div>
-                  <span className="text-xl sm:text-2xl mb-1.5 block">{cat.icon}</span>
+                  <span className="text-xl sm:text-2xl mb-1.5 block transition-transform group-hover:scale-110 duration-200 origin-left">
+                    {cat.icon}
+                  </span>
                   <p
-                    className={`text-xs font-extrabold line-clamp-1 ${
-                      isDeal ? "text-[#C92A2A]" : isFamily ? "text-[#12633D]" : "text-[#202824]"
+                    className={`text-xs font-extrabold line-clamp-1 transition-colors ${
+                      isDeal ? "text-[#C92A2A]" : isFamily ? "text-[#12633D]" : "text-[#202824] group-hover:text-[#12633D]"
                     }`}
                   >
                     {locale === "JA" ? cat.ja : locale === "BN" ? cat.bn : cat.en}
@@ -334,9 +337,10 @@ export function Homepage({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-            {(expandedSections["deals"] ? sections.deals : sections.deals.slice(0, 8)).map(p => (
+            {(expandedSections["deals"] ? sections.deals : sections.deals.slice(0, 8)).map((p, idx) => (
               <ProductCard
                 key={p.id}
+                index={idx}
                 product={p}
                 locale={locale}
                 onAdd={onAdd}
@@ -403,9 +407,10 @@ export function Homepage({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["recommended"] ? sections.recommended : sections.recommended.slice(0, 8)).map(p => (
+          {(expandedSections["recommended"] ? sections.recommended : sections.recommended.slice(0, 8)).map((p, idx) => (
             <ProductCard
               key={p.id}
+              index={idx}
               product={p}
               locale={locale}
               onAdd={onAdd}
@@ -471,9 +476,10 @@ export function Homepage({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["meatFish"] ? sections.meatFish : sections.meatFish.slice(0, 8)).map(p => (
+          {(expandedSections["meatFish"] ? sections.meatFish : sections.meatFish.slice(0, 8)).map((p, idx) => (
             <ProductCard
               key={p.id}
+              index={idx}
               product={p}
               locale={locale}
               onAdd={onAdd}
@@ -539,9 +545,10 @@ export function Homepage({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["riceFlourBeans"] ? sections.riceFlourBeans : sections.riceFlourBeans.slice(0, 8)).map(p => (
+          {(expandedSections["riceFlourBeans"] ? sections.riceFlourBeans : sections.riceFlourBeans.slice(0, 8)).map((p, idx) => (
             <ProductCard
               key={p.id}
+              index={idx}
               product={p}
               locale={locale}
               onAdd={onAdd}
@@ -608,9 +615,10 @@ export function Homepage({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-            {(expandedSections["familyBulk"] ? sections.familyBulk : sections.familyBulk.slice(0, 8)).map(p => (
+            {(expandedSections["familyBulk"] ? sections.familyBulk : sections.familyBulk.slice(0, 8)).map((p, idx) => (
               <ProductCard
                 key={p.id}
+                index={idx}
                 product={p}
                 locale={locale}
                 showUnitPrice={true}
@@ -678,9 +686,10 @@ export function Homepage({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["spices"] ? sections.spices : sections.spices.slice(0, 8)).map(p => (
+          {(expandedSections["spices"] ? sections.spices : sections.spices.slice(0, 8)).map((p, idx) => (
             <ProductCard
               key={p.id}
+              index={idx}
               product={p}
               locale={locale}
               onAdd={onAdd}
@@ -746,9 +755,10 @@ export function Homepage({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["frozen"] ? sections.frozen : sections.frozen.slice(0, 8)).map(p => (
+          {(expandedSections["frozen"] ? sections.frozen : sections.frozen.slice(0, 8)).map((p, idx) => (
             <ProductCard
               key={p.id}
+              index={idx}
               product={p}
               locale={locale}
               onAdd={onAdd}
@@ -814,9 +824,10 @@ export function Homepage({
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {(expandedSections["under500"] ? sections.under500 : sections.under500.slice(0, 8)).map(p => (
+          {(expandedSections["under500"] ? sections.under500 : sections.under500.slice(0, 8)).map((p, idx) => (
             <ProductCard
               key={p.id}
+              index={idx}
               product={p}
               locale={locale}
               onAdd={onAdd}
@@ -883,9 +894,10 @@ export function Homepage({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-            {(expandedSections["newRestocked"] ? sections.newRestocked : sections.newRestocked.slice(0, 8)).map(p => (
+            {(expandedSections["newRestocked"] ? sections.newRestocked : sections.newRestocked.slice(0, 8)).map((p, idx) => (
               <ProductCard
                 key={p.id}
+                index={idx}
                 product={p}
                 locale={locale}
                 onAdd={onAdd}

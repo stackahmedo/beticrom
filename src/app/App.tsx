@@ -181,8 +181,8 @@ export default function App() {
             onOpenLegal={topic => setLegalModalTopic(topic)}
           />
 
-          {/* Main Routing Body */}
-          <main className="flex-1">
+          {/* Main Routing Body with Smooth Page Transitions */}
+          <main key={view} className="flex-1 animate-view-ltr">
             {view === "home" && (
               <Homepage
                 locale={locale}

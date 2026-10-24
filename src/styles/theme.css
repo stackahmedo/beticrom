@@ -187,3 +187,112 @@
     line-height: 1.5;
   }
 }
+
+/* ==========================================================================
+   Smooth & Snappy Minimalistic Animations (Left-to-Right & Micro-interactions)
+   ========================================================================== */
+
+/* Left-to-Right Product & Card Entrance */
+@keyframes slideInLTR {
+  0% {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Subtle Left-to-Right Content Entrance (tabs, badges, text) */
+@keyframes slideInContentLTR {
+  0% {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Smooth Page/View Entrance */
+@keyframes viewFadeLTR {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Left-to-Right Light Sheen Sweep */
+@keyframes shimmerLTR {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Pulse for Live Stock & Halal Verification */
+@keyframes softPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.04);
+  }
+}
+
+/* Animation Utilities */
+.animate-slide-ltr {
+  animation: slideInLTR 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.animate-content-ltr {
+  animation: slideInContentLTR 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.animate-view-ltr {
+  animation: viewFadeLTR 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.animate-soft-pulse {
+  animation: softPulse 2.4s ease-in-out infinite;
+}
+
+/* Hide scrollbars for smooth touch scroll rows while preserving scrolling */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hardware accelerated smooth transitions */
+.smooth-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Accessibility: respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

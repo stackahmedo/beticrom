@@ -146,8 +146,8 @@ export function PDPPage({
           )}
         </div>
 
-        {/* Right: Info & Purchase Controls (7 cols) */}
-        <div className="lg:col-span-7 space-y-5">
+        {/* Right: Info & Purchase Controls with Left-to-Right Entrance (7 cols) */}
+        <div className="lg:col-span-7 space-y-5 animate-slide-ltr">
           {/* Brand, Badges, & SKU */}
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-2">
@@ -231,7 +231,7 @@ export function PDPPage({
               <button
                 type="button"
                 onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                className="w-10 h-11 flex items-center justify-center hover:bg-[#F7F8F5] text-[#59635D] cursor-pointer"
+                className="w-10 h-11 flex items-center justify-center hover:bg-[#F7F8F5] text-[#59635D] cursor-pointer transition-transform active:scale-90"
                 aria-label="Decrease quantity"
               >
                 <Minus size={14} />
@@ -242,7 +242,7 @@ export function PDPPage({
               <button
                 type="button"
                 onClick={() => setQuantity(q => q + 1)}
-                className="w-10 h-11 flex items-center justify-center hover:bg-[#F7F8F5] text-[#59635D] cursor-pointer"
+                className="w-10 h-11 flex items-center justify-center hover:bg-[#F7F8F5] text-[#59635D] cursor-pointer transition-transform active:scale-90"
                 aria-label="Increase quantity"
               >
                 <Plus size={14} />
@@ -252,15 +252,15 @@ export function PDPPage({
             <button
               type="button"
               onClick={handleAdd}
-              className={`flex-1 py-3 px-6 rounded-xl font-bold text-sm text-white shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                added ? "bg-[#0b4f2a]" : "bg-[#12633D] hover:bg-[#0b4f2a] active:scale-[0.99]"
+              className={`flex-1 py-3 px-6 rounded-xl font-bold text-sm text-white shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] ${
+                added ? "bg-[#0b4f2a]" : "bg-[#12633D] hover:bg-[#0b4f2a]"
               }`}
             >
               {added ? (
-                <>
-                  <Check size={18} />
+                <div className="flex items-center gap-2 animate-content-ltr">
+                  <Check size={18} className="animate-soft-pulse" />
                   <span>カートに追加しました</span>
-                </>
+                </div>
               ) : (
                 <span>カートに入れる — ¥{(p.price * quantity).toLocaleString()}（税込）</span>
               )}
@@ -274,7 +274,7 @@ export function PDPPage({
                 <button
                   key={t.key}
                   onClick={() => setActiveTab(t.key)}
-                  className={`px-3.5 py-2.5 transition-colors whitespace-nowrap cursor-pointer border-b-2 ${
+                  className={`px-3.5 py-2.5 transition-all whitespace-nowrap cursor-pointer border-b-2 ${
                     activeTab === t.key
                       ? "border-[#12633D] text-[#12633D] bg-[#F7F8F5]/60"
                       : "border-transparent text-[#59635D] hover:text-[#202824]"
@@ -285,7 +285,10 @@ export function PDPPage({
               ))}
             </div>
 
-            <div className="p-4 bg-white border border-t-0 border-[#E1E6E2] rounded-b-2xl text-xs sm:text-sm text-[#202824] leading-relaxed">
+            <div
+              key={activeTab}
+              className="p-4 bg-white border border-t-0 border-[#E1E6E2] rounded-b-2xl text-xs sm:text-sm text-[#202824] leading-relaxed animate-content-ltr"
+            >
               {activeTab === "about" && (
                 <div className="space-y-2">
                   <p className="font-bold text-[#202824]">{displayName}</p>
@@ -460,9 +463,10 @@ export function PDPPage({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {relatedProducts.map(rp => (
+            {relatedProducts.map((rp, idx) => (
               <ProductCard
                 key={rp.id}
+                index={idx}
                 product={rp}
                 locale={locale}
                 onAdd={(item) => onAdd(item)}
