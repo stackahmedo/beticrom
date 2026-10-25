@@ -250,7 +250,24 @@
   }
 }
 
+/* Right-to-Left Product & Card Entrance */
+@keyframes slideInRTL {
+  0% {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Animation Utilities */
+.animate-slide-rtl {
+  animation: slideInRTL 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
 .animate-slide-ltr {
   animation: slideInLTR 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
   will-change: transform, opacity;

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import { type Product, type Locale } from "../../data/products";
 import { ProductCard } from "./ProductCard";
 
@@ -10,6 +10,8 @@ interface ProductCarouselProps {
   onViewProduct: (id: string) => void;
   showUnitPrice?: boolean;
   className?: string;
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
 }
 
 export function ProductCarousel({
@@ -19,11 +21,17 @@ export function ProductCarousel({
   onViewProduct,
   showUnitPrice = true,
   className = "",
+  autoPlay = true,
+  autoPlayInterval = 3400,
 }: ProductCarouselProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const interactionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Check scroll position to toggle navigation buttons
   const updateScrollButtons = useCallback(() => {
@@ -49,22 +57,77 @@ export function ProductCarousel({
     };
   }, [updateScrollButtons, products]);
 
+  // Pause auto-sliding temporarily when user manually interacts
+  const pauseTemporarily = useCallback(() => {
+    setIsUserInteracting(true);
+    if (interactionTimerRef.current) {
+      clearTimeout(interactionTimerRef.current);
+    }
+    interactionTimerRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 5000);
+  }, []);
+
   // Smooth scroll left or right
   const handleScroll = (direction: "left" | "right") => {
+    pauseTemporarily();
     const el = scrollRef.current;
     if (!el) return;
-    // Scroll approximately 2.5 cards or 75% of visible width
-    const scrollDistance = Math.max(el.clientWidth * 0.75, 280);
+    const firstCard = el.querySelector<HTMLElement>(".snap-start");
+    const cardWidth = firstCard ? firstCard.offsetWidth : 210;
+    const scrollDistance = (cardWidth + 14) * 2;
     el.scrollBy({
       left: direction === "left" ? -scrollDistance : scrollDistance,
       behavior: "smooth",
     });
   };
 
+  // Automatic right-to-left product animation
+  useEffect(() => {
+    if (!autoPlay || !isPlaying || isHovered || isUserInteracting) return;
+
+    const el = scrollRef.current;
+    const container = containerRef.current;
+    if (!el || !container) return;
+
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0]) {
+          isVisible = entries[0].isIntersecting;
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(container);
+
+    const timer = setInterval(() => {
+      if (!isVisible || !el) return;
+      const { scrollLeft, scrollWidth, clientWidth } = el;
+
+      // When reaching near the end, loop smoothly back to start
+      if (scrollLeft + clientWidth >= scrollWidth - 16) {
+        el.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        // Step forward by 1 product card width + gap to advance products right-to-left
+        const firstCard = el.querySelector<HTMLElement>(".snap-start");
+        const cardWidth = firstCard ? firstCard.offsetWidth : 210;
+        const step = cardWidth + 14;
+        el.scrollBy({ left: step, behavior: "smooth" });
+      }
+    }, autoPlayInterval);
+
+    return () => {
+      clearInterval(timer);
+      observer.disconnect();
+    };
+  }, [autoPlay, isPlaying, isHovered, isUserInteracting, autoPlayInterval, products.length]);
+
   if (!products || products.length === 0) return null;
 
   return (
     <div
+      ref={containerRef}
       className={`relative group/carousel ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -108,6 +171,8 @@ export function ProductCarousel({
       {/* Scrollable Track (Swipeable, with snap and hide-scrollbar) */}
       <div
         ref={scrollRef}
+        onTouchStart={pauseTemporarily}
+        onPointerDown={pauseTemporarily}
         onKeyDown={e => {
           if (e.key === "ArrowLeft") handleScroll("left");
           if (e.key === "ArrowRight") handleScroll("right");
@@ -134,14 +199,41 @@ export function ProductCarousel({
         ))}
       </div>
 
-      {/* Mobile Swipe / Arrow Controls Footer */}
-      <div className="flex md:hidden items-center justify-between mt-1 pt-1 px-1 text-xs text-[#59635D]">
-        <span className="text-[11px] font-medium flex items-center gap-1">
-          <span>←</span>
-          <span>{locale === "JA" ? "左右にスワイプ" : locale === "BN" ? "ডানে-বামে সোয়াইপ করুন" : "Swipe left/right"}</span>
-          <span>→</span>
-        </span>
-        <div className="flex items-center gap-1.5">
+      {/* Carousel Controls Footer: Auto-slide Status & Mobile Controls */}
+      <div className="flex items-center justify-between mt-1 pt-1 px-1 text-xs text-[#59635D]">
+        <div className="flex items-center gap-2">
+          {autoPlay && (
+            <button
+              type="button"
+              onClick={() => setIsPlaying(p => !p)}
+              title={isPlaying ? "自動スライドを一時停止" : "自動スライドを再開"}
+              className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-[#E1E6E2] bg-white text-[11px] text-[#59635D] hover:text-[#12633D] hover:border-[#12633D] transition-colors cursor-pointer shadow-2xs"
+            >
+              {isPlaying ? (
+                <>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <Pause size={10} className="text-[#12633D]" />
+                  <span>{locale === "JA" ? "自動スライド中" : locale === "BN" ? "অটো স্লাইড" : "Auto-sliding"}</span>
+                </>
+              ) : (
+                <>
+                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
+                  <Play size={10} className="text-neutral-500" />
+                  <span>{locale === "JA" ? "一時停止中" : locale === "BN" ? "বন্ধ আছে" : "Paused"}</span>
+                </>
+              )}
+            </button>
+          )}
+
+          <span className="hidden xs:inline-flex items-center gap-1 text-[11px] text-[#8C948F]">
+            <span>←</span>
+            <span>{locale === "JA" ? "左右にスワイプ可能" : locale === "BN" ? "ডানে-বামে সোয়াইপ" : "Swipe left/right"}</span>
+            <span>→</span>
+          </span>
+        </div>
+
+        {/* Mobile Swipe / Arrow Buttons */}
+        <div className="flex md:hidden items-center gap-1.5">
           <button
             type="button"
             onClick={() => handleScroll("left")}
