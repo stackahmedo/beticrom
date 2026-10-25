@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Snowflake, Package, Thermometer, Shield, Heart, Check } from "lucide-react";
+import { Snowflake, Package, Thermometer, Shield, Heart, Check, Eye } from "lucide-react";
 import {
   type Product,
   type Locale,
@@ -199,6 +199,14 @@ export function ProductCard({
         >
           <Heart size={13} className={wished ? "fill-[#C92A2A] text-[#C92A2A]" : "text-[#59635D]"} />
         </button>
+
+        {/* Quick View Details Pop-Up Pill on Hover */}
+        <div className="absolute inset-x-0 bottom-2.5 flex justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-y-1.5 group-hover:translate-y-0 z-10">
+          <span className="px-2.5 py-1 rounded-full bg-white/95 text-[#202824] text-[11px] font-bold shadow-md flex items-center gap-1.5 border border-[#E1E6E2] backdrop-blur-xs">
+            <Eye size={12} className="text-[#12633D]" />
+            <span>{locale === "JA" ? "詳細を見る" : locale === "BN" ? "বিস্তারিত দেখুন" : "Quick View"}</span>
+          </span>
+        </div>
       </div>
 
       {/* Content Container with Left-to-Right Entrance */}

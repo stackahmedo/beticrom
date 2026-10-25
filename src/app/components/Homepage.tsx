@@ -34,6 +34,7 @@ interface HomepageProps {
   locale: Locale;
   onAdd: (product: Product) => void;
   onSelectProduct: (id: string) => void;
+  onOpenProductPopup?: (product: Product) => void;
   setView: (v: View) => void;
   setSelectedCategory: (catId: string) => void;
   onOpenLegal: (topic: LegalTopic) => void;
@@ -43,12 +44,25 @@ export function Homepage({
   locale,
   onAdd,
   onSelectProduct,
+  onOpenProductPopup,
   setView,
   setSelectedCategory,
   onOpenLegal,
 }: HomepageProps) {
   // Toggle state for "もっと見る" (expand/collapse) per section
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+
+  const handleProductClick = (id: string) => {
+    if (onOpenProductPopup) {
+      const p = ALL_PRODUCTS.find(item => item.id === id);
+      if (p) {
+        onOpenProductPopup(p);
+        return;
+      }
+    }
+    onSelectProduct(id);
+    setView("pdp");
+  };
 
   const toggleExpand = (sectionKey: string) => {
     setExpandedSections(prev => ({
@@ -341,10 +355,7 @@ export function Homepage({
             products={sections.deals}
             locale={locale}
             onAdd={onAdd}
-            onViewProduct={id => {
-              onSelectProduct(id);
-              setView("pdp");
-            }}
+            onViewProduct={handleProductClick}
           />
         </div>
       </section>
@@ -383,10 +394,7 @@ export function Homepage({
           products={sections.recommended}
           locale={locale}
           onAdd={onAdd}
-          onViewProduct={id => {
-            onSelectProduct(id);
-            setView("pdp");
-          }}
+          onViewProduct={handleProductClick}
         />
       </section>
 
@@ -424,10 +432,7 @@ export function Homepage({
           products={sections.meatFish}
           locale={locale}
           onAdd={onAdd}
-          onViewProduct={id => {
-            onSelectProduct(id);
-            setView("pdp");
-          }}
+          onViewProduct={handleProductClick}
         />
       </section>
 
@@ -465,10 +470,7 @@ export function Homepage({
           products={sections.riceFlourBeans}
           locale={locale}
           onAdd={onAdd}
-          onViewProduct={id => {
-            onSelectProduct(id);
-            setView("pdp");
-          }}
+          onViewProduct={handleProductClick}
         />
       </section>
 
@@ -508,10 +510,7 @@ export function Homepage({
             locale={locale}
             showUnitPrice={true}
             onAdd={onAdd}
-            onViewProduct={id => {
-              onSelectProduct(id);
-              setView("pdp");
-            }}
+            onViewProduct={handleProductClick}
           />
         </div>
       </section>
@@ -550,10 +549,7 @@ export function Homepage({
           products={sections.spices}
           locale={locale}
           onAdd={onAdd}
-          onViewProduct={id => {
-            onSelectProduct(id);
-            setView("pdp");
-          }}
+          onViewProduct={handleProductClick}
         />
       </section>
 
@@ -591,10 +587,7 @@ export function Homepage({
           products={sections.frozen}
           locale={locale}
           onAdd={onAdd}
-          onViewProduct={id => {
-            onSelectProduct(id);
-            setView("pdp");
-          }}
+          onViewProduct={handleProductClick}
         />
       </section>
 
@@ -632,10 +625,7 @@ export function Homepage({
           products={sections.under500}
           locale={locale}
           onAdd={onAdd}
-          onViewProduct={id => {
-            onSelectProduct(id);
-            setView("pdp");
-          }}
+          onViewProduct={handleProductClick}
         />
       </section>
 
@@ -674,10 +664,7 @@ export function Homepage({
             products={sections.newRestocked}
             locale={locale}
             onAdd={onAdd}
-            onViewProduct={id => {
-              onSelectProduct(id);
-              setView("pdp");
-            }}
+            onViewProduct={handleProductClick}
           />
         </section>
       )}

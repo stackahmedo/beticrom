@@ -20,6 +20,7 @@ import { AccountPage } from "./components/AccountPage";
 import { AdminPanel } from "./components/AdminPanel";
 import { Footer } from "./components/Footer";
 import { LegalModal } from "./components/LegalModal";
+import { ProductDetailModal } from "./components/ProductDetailModal";
 
 const ADMIN_PASSCODE = "beticrom-admin-2026";
 
@@ -31,6 +32,16 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [legalModalTopic, setLegalModalTopic] = useState<LegalTopic>(null);
+  const [popupProduct, setPopupProduct] = useState<Product | null>(null);
+
+  const handleOpenProductPopup = (productOrId: Product | string) => {
+    const p = typeof productOrId === "string"
+      ? ALL_PRODUCTS.find(item => item.id === productOrId)
+      : productOrId;
+    if (p) {
+      setPopupProduct(p);
+    }
+  };
 
   // Admin authentication state
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -191,6 +202,7 @@ export default function App() {
                   setSelectedProductId(id);
                   setView("pdp");
                 }}
+                onOpenProductPopup={handleOpenProductPopup}
                 setView={setView}
                 setSelectedCategory={setSelectedCategory}
                 onOpenLegal={topic => setLegalModalTopic(topic)}
@@ -209,6 +221,7 @@ export default function App() {
                   setSelectedProductId(id);
                   setView("pdp");
                 }}
+                onOpenProductPopup={handleOpenProductPopup}
                 setView={setView}
               />
             )}
@@ -219,6 +232,7 @@ export default function App() {
                 productId={selectedProductId}
                 onAdd={addToCart}
                 onSelectProduct={setSelectedProductId}
+                onOpenProductPopup={handleOpenProductPopup}
                 setView={setView}
                 setSelectedCategory={setSelectedCategory}
                 onOpenLegal={topic => setLegalModalTopic(topic)}
@@ -253,6 +267,7 @@ export default function App() {
                   setSelectedProductId(id);
                   setView("pdp");
                 }}
+                onOpenProductPopup={handleOpenProductPopup}
                 setView={setView}
               />
             )}
@@ -337,6 +352,22 @@ export default function App() {
             </button>
           </nav>
         </>
+      )}
+
+      {/* Product Detail Pop-Up Modal */}
+      {popupProduct && (
+        <ProductDetailModal
+          product={popupProduct}
+          locale={locale}
+          onClose={() => setPopupProduct(null)}
+          onAdd={addToCart}
+          onGoToPDP={id => {
+            setSelectedProductId(id);
+            setView("pdp");
+            setPopupProduct(null);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        />
       )}
 
       {/* Legal & Policy Modal */}

@@ -23,6 +23,7 @@ interface CategoryPageProps {
   setSearchQuery: (q: string) => void;
   onAdd: (product: Product) => void;
   onSelectProduct: (id: string) => void;
+  onOpenProductPopup?: (product: Product) => void;
   setView: (v: View) => void;
 }
 
@@ -34,6 +35,7 @@ export function CategoryPage({
   setSearchQuery,
   onAdd,
   onSelectProduct,
+  onOpenProductPopup,
   setView,
 }: CategoryPageProps) {
   const [activeStorage, setActiveStorage] = useState<StorageType | "all">("all");
@@ -390,8 +392,12 @@ export function CategoryPage({
               locale={locale}
               onAdd={onAdd}
               onView={() => {
-                onSelectProduct(p.id);
-                setView("pdp");
+                if (onOpenProductPopup) {
+                  onOpenProductPopup(p);
+                } else {
+                  onSelectProduct(p.id);
+                  setView("pdp");
+                }
               }}
             />
           ))}

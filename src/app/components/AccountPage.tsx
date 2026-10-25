@@ -8,6 +8,7 @@ interface AccountPageProps {
   locale: Locale;
   onAdd: (product: Product) => void;
   onSelectProduct: (id: string) => void;
+  onOpenProductPopup?: (product: Product) => void;
   setView: (v: View) => void;
 }
 
@@ -15,6 +16,7 @@ export function AccountPage({
   locale,
   onAdd,
   onSelectProduct,
+  onOpenProductPopup,
   setView,
 }: AccountPageProps) {
   const recentOrders = [
@@ -120,8 +122,12 @@ export function AccountPage({
               locale={locale}
               onAdd={onAdd}
               onView={() => {
-                onSelectProduct(p.id);
-                setView("pdp");
+                if (onOpenProductPopup) {
+                  onOpenProductPopup(p);
+                } else {
+                  onSelectProduct(p.id);
+                  setView("pdp");
+                }
               }}
             />
           ))}

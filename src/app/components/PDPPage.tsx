@@ -17,6 +17,7 @@ interface PDPPageProps {
   productId: string;
   onAdd: (product: Product, quantity?: number) => void;
   onSelectProduct: (id: string) => void;
+  onOpenProductPopup?: (product: Product) => void;
   setView: (v: View) => void;
   setSelectedCategory: (catId: string) => void;
   onOpenLegal: (topic: LegalTopic) => void;
@@ -36,6 +37,7 @@ export function PDPPage({
   productId,
   onAdd,
   onSelectProduct,
+  onOpenProductPopup,
   setView,
   setSelectedCategory,
   onOpenLegal,
@@ -468,6 +470,13 @@ export function PDPPage({
             locale={locale}
             onAdd={item => onAdd(item)}
             onViewProduct={id => {
+              if (onOpenProductPopup) {
+                const rp = ALL_PRODUCTS.find(item => item.id === id);
+                if (rp) {
+                  onOpenProductPopup(rp);
+                  return;
+                }
+              }
               onSelectProduct(id);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
