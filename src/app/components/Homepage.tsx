@@ -255,13 +255,13 @@ export function Homepage({
 
       {/* 4. Compact Category Navigation */}
       <section className="max-w-screen-xl mx-auto px-4">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-3.5">
           <div>
-            <h2 className="text-base sm:text-lg font-extrabold text-[#202824] flex items-center gap-1.5">
-              <Layers size={18} className="text-[#12633D]" />
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] flex items-center gap-2 tracking-tight">
+              <Layers size={22} className="text-[#12633D] shrink-0" />
               <span>{locale === "JA" ? "カテゴリーから探す" : locale === "BN" ? "ক্যাটাগরি সমূহ" : "Shop by Category"}</span>
             </h2>
-            <p className="text-xs text-[#59635D] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#59635D] mt-1">
               {locale === "JA"
                 ? "お求めの食材をカテゴリーからスムーズにお選びいただけます"
                 : locale === "BN"
@@ -271,10 +271,10 @@ export function Homepage({
           </div>
           <button
             onClick={() => handleCategoryClick("all")}
-            className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer"
+            className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
           >
             <span>{locale === "JA" ? "全948品一覧" : locale === "BN" ? "সকল পণ্য" : "All 948 Items"}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={15} />
           </button>
         </div>
 
@@ -301,18 +301,18 @@ export function Homepage({
                     {cat.icon}
                   </span>
                   <p
-                    className={`text-xs font-extrabold line-clamp-1 transition-colors ${
+                    className={`text-xs sm:text-sm font-extrabold line-clamp-1 transition-colors ${
                       isDeal ? "text-[#C92A2A]" : isFamily ? "text-[#12633D]" : "text-[#202824] group-hover:text-[#12633D]"
                     }`}
                   >
                     {locale === "JA" ? cat.ja : locale === "BN" ? cat.bn : cat.en}
                   </p>
                 </div>
-                <div className="mt-2 pt-1.5 border-t border-[#E1E6E2]/60 flex items-center justify-between text-[10px] font-bold">
+                <div className="mt-2 pt-1.5 border-t border-[#E1E6E2]/60 flex items-center justify-between text-[11px] sm:text-xs font-bold">
                   <span className={isDeal ? "text-[#C92A2A]" : isFamily ? "text-[#12633D]" : "text-[#59635D]"}>
                     {cat.count}品
                   </span>
-                  <ChevronRight size={12} className="text-[#59635D] group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight size={13} className="text-[#59635D] group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </button>
             );
@@ -326,15 +326,15 @@ export function Homepage({
           <div className="flex items-center justify-between mb-3.5">
             <div>
               <div className="flex items-center gap-2">
-                <Flame size={18} className="text-[#C92A2A]" />
-                <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+                <Flame size={22} className="text-[#C92A2A] shrink-0" />
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                   {locale === "JA" ? "今週のお買い得商品" : locale === "BN" ? "সাপ্তাহিক অফার" : "Weekly Offers"}
                 </h2>
-                <span className="px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-[#C92A2A] text-white">
+                <span className="px-2.5 py-0.5 text-xs font-extrabold rounded-full bg-[#C92A2A] text-white">
                   SALE
                 </span>
               </div>
-              <p className="text-xs text-[#59635D] mt-0.5">
+              <p className="text-xs sm:text-sm text-[#59635D] mt-1">
                 {locale === "JA"
                   ? "数量限定・特別割引価格。人気定番商品をお得にお買い求めいただけます"
                   : locale === "BN"
@@ -344,10 +344,10 @@ export function Homepage({
             </div>
             <button
               onClick={() => handleCategoryClick("deals")}
-              className="text-xs font-bold text-[#C92A2A] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+              className="text-xs sm:text-sm font-bold text-[#C92A2A] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
             >
               <span>{locale === "JA" ? "セール一覧を見る" : locale === "BN" ? "সব অফার" : "View All Deals"}</span>
-              <ChevronRight size={14} />
+              <ChevronRight size={15} />
             </button>
           </div>
 
@@ -365,15 +365,15 @@ export function Homepage({
         <div className="flex items-center justify-between mb-3.5">
           <div>
             <div className="flex items-center gap-2">
-              <Sparkles size={18} className="text-amber-500" />
-              <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+              <Sparkles size={22} className="text-amber-500 shrink-0" />
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                 {locale === "JA" ? "おすすめ商品" : locale === "BN" ? "জনপ্রিয় পণ্য" : "Recommended Products"}
               </h2>
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-100 text-[#12633D]">
+              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-[#12633D]">
                 人気定番
               </span>
             </div>
-            <p className="text-xs text-[#59635D] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#59635D] mt-1">
               {locale === "JA"
                 ? "日本在住のお客様からリピート購入されている確かな品質の定番品"
                 : locale === "BN"
@@ -383,10 +383,10 @@ export function Homepage({
           </div>
           <button
             onClick={() => handleCategoryClick("all")}
-            className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+            className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
           >
             <span>{locale === "JA" ? "すべて見る" : locale === "BN" ? "সবগুলো" : "View All"}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={15} />
           </button>
         </div>
 
@@ -403,15 +403,15 @@ export function Homepage({
         <div className="flex items-center justify-between mb-3.5">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-lg">🥩</span>
-              <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+              <span className="text-xl">🥩</span>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                 {locale === "JA" ? "ハラール肉・魚" : locale === "BN" ? "হালাল মাংস ও মাছ" : "Halal Meat & Fish"}
               </h2>
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-700">
+              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-100 text-blue-700">
                 冷凍便発送
               </span>
             </div>
-            <p className="text-xs text-[#59635D] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#59635D] mt-1">
               {locale === "JA"
                 ? "マトン・チキン・ビーフ・魚介をヤマト冷凍便にて新鮮なまま全国へお届け"
                 : locale === "BN"
@@ -421,10 +421,10 @@ export function Homepage({
           </div>
           <button
             onClick={() => handleCategoryClick("meat_fish")}
-            className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+            className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
           >
             <span>{locale === "JA" ? "お肉・魚一覧" : locale === "BN" ? "সব মাংস ও মাছ" : "View Meat & Fish"}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={15} />
           </button>
         </div>
 
@@ -441,15 +441,15 @@ export function Homepage({
         <div className="flex items-center justify-between mb-3.5">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-lg">🌾</span>
-              <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+              <span className="text-xl">🌾</span>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                 {locale === "JA" ? "米・粉・豆類" : locale === "BN" ? "চাল, আটা ও ডাল" : "Rice, Flour & Lentils"}
               </h2>
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-100 text-amber-800">
+              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-800">
                 主食・食卓の定番
               </span>
             </div>
-            <p className="text-xs text-[#59635D] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#59635D] mt-1">
               {locale === "JA"
                 ? "香り高い特選バスマティ米、チャパティ用全粒粉アタ、チャナ豆・ダールなど"
                 : locale === "BN"
@@ -459,10 +459,10 @@ export function Homepage({
           </div>
           <button
             onClick={() => handleCategoryClick("rice_flour")}
-            className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+            className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
           >
             <span>{locale === "JA" ? "米・粉一覧" : locale === "BN" ? "সব চাল ও আটা" : "View Rice & Flour"}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={15} />
           </button>
         </div>
 
@@ -480,15 +480,15 @@ export function Homepage({
           <div className="flex items-center justify-between mb-3.5">
             <div>
               <div className="flex items-center gap-2">
-                <Users size={18} className="text-[#12633D]" />
-                <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+                <Users size={22} className="text-[#12633D] shrink-0" />
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                   {locale === "JA" ? "ファミリー・まとめ買い" : locale === "BN" ? "ফ্যামিলি ও বাল্ক শপিং" : "Family & Bulk Shopping"}
                 </h2>
-                <span className="px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-[#12633D] text-white">
+                <span className="px-2.5 py-0.5 text-xs font-extrabold rounded-full bg-[#12633D] text-white">
                   大容量でお得
                 </span>
               </div>
-              <p className="text-xs text-[#59635D] mt-0.5">
+              <p className="text-xs sm:text-sm text-[#59635D] mt-1">
                 {locale === "JA"
                   ? "5kg/10kgの大袋米・粉、5L食用油、1kgお肉、10枚入冷凍パンなど大容量パック（単価目安表示）"
                   : locale === "BN"
@@ -498,10 +498,10 @@ export function Homepage({
             </div>
             <button
               onClick={() => handleCategoryClick("family")}
-              className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+              className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
             >
               <span>{locale === "JA" ? "大容量一覧を見る" : locale === "BN" ? "সব বাল্ক পণ্য" : "View All Bulk"}</span>
-              <ChevronRight size={14} />
+              <ChevronRight size={15} />
             </button>
           </div>
 
@@ -520,15 +520,15 @@ export function Homepage({
         <div className="flex items-center justify-between mb-3.5">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-lg">🌶️</span>
-              <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+              <span className="text-xl">🌶️</span>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                 {locale === "JA" ? "スパイス・調味料" : locale === "BN" ? "মসলা ও সিজনিং" : "Spices & Seasonings"}
               </h2>
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-red-100 text-red-800">
+              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-red-100 text-red-800">
                 本場の香り
               </span>
             </div>
-            <p className="text-xs text-[#59635D] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#59635D] mt-1">
               {locale === "JA"
                 ? "直輸入の本格ホールスパイス、パウダー、ブレンドマサラ、純ギー・オイル"
                 : locale === "BN"
@@ -538,10 +538,10 @@ export function Homepage({
           </div>
           <button
             onClick={() => handleCategoryClick("spices")}
-            className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+            className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
           >
             <span>{locale === "JA" ? "スパイス一覧" : locale === "BN" ? "সব মসলা" : "View Spices"}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={15} />
           </button>
         </div>
 
@@ -558,15 +558,15 @@ export function Homepage({
         <div className="flex items-center justify-between mb-3.5">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-lg">❄️</span>
-              <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+              <span className="text-xl">❄️</span>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                 {locale === "JA" ? "冷凍食品" : locale === "BN" ? "হিমায়িত খাবার" : "Frozen Foods"}
               </h2>
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-cyan-100 text-cyan-800">
+              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-cyan-100 text-cyan-800">
                 時短・手軽に本場
               </span>
             </div>
-            <p className="text-xs text-[#59635D] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#59635D] mt-1">
               {locale === "JA"
                 ? "焼くだけ・揚げるだけ。本場のパラタ、サモサ、シンガラ、スナックを冷凍でお届け"
                 : locale === "BN"
@@ -576,10 +576,10 @@ export function Homepage({
           </div>
           <button
             onClick={() => handleCategoryClick("frozen")}
-            className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+            className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
           >
             <span>{locale === "JA" ? "冷凍食品一覧" : locale === "BN" ? "সব ফ্রোজেন" : "View Frozen"}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={15} />
           </button>
         </div>
 
@@ -596,15 +596,15 @@ export function Homepage({
         <div className="flex items-center justify-between mb-3.5">
           <div>
             <div className="flex items-center gap-2">
-              <Tag size={18} className="text-emerald-600" />
-              <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+              <Tag size={22} className="text-emerald-600 shrink-0" />
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                 {locale === "JA" ? "500円以下の商品" : locale === "BN" ? "৫০০ ইয়েনের নিচের পণ্য" : "Products ¥500 and Under"}
               </h2>
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-100 text-[#12633D]">
+              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-[#12633D]">
                 ワンコイン・ついで買い
               </span>
             </div>
-            <p className="text-xs text-[#59635D] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#59635D] mt-1">
               {locale === "JA"
                 ? "あと少しで送料無料！手軽に試せる本格スパイス・お菓子・日常の常備品"
                 : locale === "BN"
@@ -614,10 +614,10 @@ export function Homepage({
           </div>
           <button
             onClick={() => handleCategoryClick("under500")}
-            className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+            className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
           >
             <span>{locale === "JA" ? "500円以下一覧" : locale === "BN" ? "সবগুলো" : "View All Under ¥500"}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={15} />
           </button>
         </div>
 
@@ -635,15 +635,15 @@ export function Homepage({
           <div className="flex items-center justify-between mb-3.5">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-lg">✨</span>
-                <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+                <span className="text-xl">✨</span>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                   {locale === "JA" ? "新入荷・再入荷" : locale === "BN" ? "নতুন ও পুনরায় আমদানি" : "New & Restocked"}
                 </h2>
-                <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-700">
+                <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-100 text-blue-700">
                   NEW & RESTOCK
                 </span>
               </div>
-              <p className="text-xs text-[#59635D] mt-0.5">
+              <p className="text-xs sm:text-sm text-[#59635D] mt-1">
                 {locale === "JA"
                   ? "新しく入荷した世界の食材と、リクエストにお応えして再入荷した人気商品"
                   : locale === "BN"
@@ -653,10 +653,10 @@ export function Homepage({
             </div>
             <button
               onClick={() => handleCategoryClick("new_restocked")}
-              className="text-xs font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
+              className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-0.5 cursor-pointer shrink-0"
             >
               <span>{locale === "JA" ? "新入荷一覧" : locale === "BN" ? "সব নতুন পণ্য" : "View New & Restocked"}</span>
-              <ChevronRight size={14} />
+              <ChevronRight size={15} />
             </button>
           </div>
 
@@ -676,12 +676,12 @@ export function Homepage({
           <div className="flex items-center justify-between mb-3.5">
             <div>
               <div className="flex items-center gap-2">
-                <UtensilsCrossed size={18} className="text-[#12633D]" />
-                <h2 className="text-base sm:text-lg font-extrabold text-[#202824]">
+                <UtensilsCrossed size={22} className="text-[#12633D] shrink-0" />
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#202824] tracking-tight">
                   {locale === "JA" ? "おすすめハラールレシピから探す" : locale === "BN" ? "রেসিপি থেকে উপাদান খুঁজুন" : "Cook Authentic Recipes"}
                 </h2>
               </div>
-              <p className="text-xs text-[#59635D] mt-0.5">
+              <p className="text-xs sm:text-sm text-[#59635D] mt-1">
                 {locale === "JA"
                   ? "本格ビリヤニやカレーに必要なスパイス・食材をまとめて確認できます"
                   : locale === "BN"
@@ -708,17 +708,17 @@ export function Homepage({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
                   <div className="absolute bottom-2.5 left-3 right-3 text-white">
-                    <p className="text-sm font-extrabold leading-tight">
+                    <p className="text-sm sm:text-base font-extrabold leading-tight">
                       {locale === "JA" ? recipe.nameJA : locale === "BN" ? recipe.nameBN : recipe.name}
                     </p>
-                    <p className="text-[10px] text-white/80 mt-0.5">
+                    <p className="text-xs text-white/90 mt-0.5">
                       調理目安: {recipe.time} · 主食材 {recipe.items}品
                     </p>
                   </div>
                 </div>
-                <div className="p-2.5 flex items-center justify-between text-xs text-[#12633D] font-bold">
+                <div className="p-2.5 flex items-center justify-between text-xs sm:text-sm text-[#12633D] font-bold">
                   <span>{locale === "JA" ? "関連食材を見る" : locale === "BN" ? "উপাদানসমূহ" : "View Ingredients"}</span>
-                  <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             ))}
@@ -728,13 +728,13 @@ export function Homepage({
         {/* First-time Shopping Guide */}
         <div className="rounded-2xl border border-[#E1E6E2] bg-[#F7F8F5] p-5 sm:p-7">
           <div className="max-w-xl mx-auto text-center mb-6">
-            <span className="text-[11px] font-bold text-[#12633D] uppercase tracking-wider bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+            <span className="text-[11px] sm:text-xs font-bold text-[#12633D] uppercase tracking-wider bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
               FIRST TIME GUIDE
             </span>
-            <h3 className="text-lg sm:text-xl font-extrabold text-[#202824] mt-1.5 mb-1">
+            <h3 className="text-xl sm:text-2xl font-extrabold text-[#202824] mt-2 mb-1">
               {locale === "JA" ? "Beticromでのお買い物の流れ" : locale === "BN" ? "বেটিক্রম এ কেনাকাটার সহজ ধাপ" : "How to Order on Beticrom"}
             </h3>
-            <p className="text-xs text-[#59635D] leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#59635D] leading-relaxed">
               {locale === "JA"
                 ? "日本全国のご家庭へ、厳選されたハラール食品と本格スパイスを安心・迅速にお届けします。"
                 : locale === "BN"
@@ -748,10 +748,10 @@ export function Homepage({
               <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#12633D] flex items-center justify-center font-extrabold text-sm mb-2.5">
                 1
               </div>
-              <h4 className="text-xs sm:text-sm font-bold text-[#202824] mb-1">
+              <h4 className="text-sm sm:text-base font-bold text-[#202824] mb-1">
                 商品を選んでカートへ
               </h4>
-              <p className="text-[11px] text-[#59635D] leading-relaxed">
+              <p className="text-xs text-[#59635D] leading-relaxed">
                 全商品に「常温・冷蔵・冷凍」およびハラール区分を明記。1点から気軽にご注文いただけます。
               </p>
             </div>
@@ -760,10 +760,10 @@ export function Homepage({
               <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-extrabold text-sm mb-2.5">
                 2
               </div>
-              <h4 className="text-xs sm:text-sm font-bold text-[#202824] mb-1">
+              <h4 className="text-sm sm:text-base font-bold text-[#202824] mb-1">
                 温度帯別に安心梱包
               </h4>
-              <p className="text-[11px] text-[#59635D] leading-relaxed">
+              <p className="text-xs text-[#59635D] leading-relaxed">
                 品質保持のため、常温品と冷凍・冷蔵品は別箱に梱包。ヤマト運輸の温度管理便にて発送いたします。
               </p>
             </div>
@@ -772,10 +772,10 @@ export function Homepage({
               <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-extrabold text-sm mb-2.5">
                 3
               </div>
-              <h4 className="text-xs sm:text-sm font-bold text-[#202824] mb-1">
+              <h4 className="text-sm sm:text-base font-bold text-[#202824] mb-1">
                 ご指定の日時に全国お届け
               </h4>
-              <p className="text-[11px] text-[#59635D] leading-relaxed">
+              <p className="text-xs text-[#59635D] leading-relaxed">
                 午前中から夜間21時まで配達時間帯を指定可能。常温品は¥6,500以上で送料無料になります。
               </p>
             </div>
@@ -784,10 +784,10 @@ export function Homepage({
           <div className="mt-5 text-center">
             <button
               onClick={() => onOpenLegal("guide")}
-              className="text-xs font-bold text-[#12633D] hover:underline inline-flex items-center gap-1 cursor-pointer"
+              className="text-xs sm:text-sm font-bold text-[#12633D] hover:underline inline-flex items-center gap-1 cursor-pointer"
             >
               <span>詳しいご利用ガイド・配送料金について確認する</span>
-              <ChevronRight size={14} />
+              <ChevronRight size={15} />
             </button>
           </div>
         </div>
@@ -799,15 +799,15 @@ export function Homepage({
           <div className="bg-white border border-[#E1E6E2] rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Shield size={18} className="text-[#12633D]" />
-                <h3 className="text-sm sm:text-base font-bold text-[#202824]">
+                <Shield size={20} className="text-[#12633D]" />
+                <h3 className="text-base sm:text-lg font-extrabold text-[#202824]">
                   Beticromのハラール品質基準
                 </h3>
               </div>
-              <p className="text-xs text-[#59635D] leading-relaxed mb-3">
+              <p className="text-xs sm:text-sm text-[#59635D] leading-relaxed mb-3">
                 当店で取り扱う食品は、ハラール認証機関（JMA/HJBA等）の認証品、正規輸入元の証明書確認済み商品、および原材料に豚・アルコール不使用の食品を厳密に分類・管理しています。
               </p>
-              <div className="space-y-1.5 text-xs">
+              <div className="space-y-1.5 text-xs sm:text-sm">
                 <div className="flex items-center gap-2 text-[#202824]">
                   <span className="w-2 h-2 rounded-full bg-[#12633D] shrink-0" />
                   <span>第三者ハラール認証取得商品（認定書確認済み）</span>
@@ -824,26 +824,26 @@ export function Homepage({
             </div>
             <button
               onClick={() => onOpenLegal("tokushoho")}
-              className="mt-4 pt-3 border-t border-[#E1E6E2] text-xs font-bold text-[#12633D] hover:underline flex items-center gap-1 cursor-pointer"
+              className="mt-4 pt-3 border-t border-[#E1E6E2] text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>特定商取引法に基づく表記を見る</span>
-              <ChevronRight size={13} />
+              <ChevronRight size={14} />
             </button>
           </div>
 
           <div className="bg-white border border-[#E1E6E2] rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <MapPin size={18} className="text-[#12633D]" />
-                <h3 className="text-sm sm:text-base font-bold text-[#202824]">
+                <MapPin size={20} className="text-[#12633D]" />
+                <h3 className="text-base sm:text-lg font-extrabold text-[#202824]">
                   店舗情報・配送拠点
                 </h3>
               </div>
-              <p className="text-xs text-[#59635D] leading-relaxed mb-2.5">
+              <p className="text-xs sm:text-sm text-[#59635D] leading-relaxed mb-2.5">
                 実店舗および東京物流センターから、新鮮な状態のまま迅速・確実に発送いたします。
               </p>
               <div className="bg-[#F7F8F5] p-3 rounded-xl border border-[#E1E6E2] text-xs text-[#202824] space-y-1">
-                <p className="font-bold">株式会社ベティクロム（Beticrom Co., Ltd.）</p>
+                <p className="font-bold text-xs sm:text-sm">株式会社ベティクロム（Beticrom Co., Ltd.）</p>
                 <p className="text-[#59635D]">〒124-0025 東京都葛飾区西新小岩1-2-11 キクヤビル1F</p>
                 <p className="text-[#59635D]">お電話でのお問い合わせ: 03-5654-6417</p>
                 <p className="text-[#59635D]">メール: contact@beticrom.jp</p>
@@ -851,10 +851,10 @@ export function Homepage({
             </div>
             <button
               onClick={() => onOpenLegal("company")}
-              className="mt-4 pt-3 border-t border-[#E1E6E2] text-xs font-bold text-[#12633D] hover:underline flex items-center gap-1 cursor-pointer"
+              className="mt-4 pt-3 border-t border-[#E1E6E2] text-xs sm:text-sm font-bold text-[#12633D] hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>会社概要を見る</span>
-              <ChevronRight size={13} />
+              <ChevronRight size={14} />
             </button>
           </div>
         </div>

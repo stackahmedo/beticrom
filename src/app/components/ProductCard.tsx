@@ -74,10 +74,10 @@ export function HalalBadge({ tier, locale }: { tier: HalalTier; locale: Locale }
   if (!cfg) return null;
   return (
     <span
-      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold border leading-none"
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold border leading-none shrink-0"
       style={{ background: cfg.bg, color: cfg.text, borderColor: cfg.border }}
     >
-      <Shield size={9} strokeWidth={2.5} />
+      <Shield size={10} strokeWidth={2.5} />
       <span>{cfg.label[locale] || cfg.label.EN}</span>
     </span>
   );
@@ -87,7 +87,7 @@ export function StorageBadge({ type, locale = "JA" }: { type: StorageType; local
   const cfg = STORAGE_CONFIG[type] || STORAGE_CONFIG.dry;
   return (
     <span
-      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold leading-none"
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold leading-none shrink-0"
       style={{ background: cfg.bg, color: cfg.text }}
     >
       {cfg.icon}
@@ -166,22 +166,22 @@ export function ProductCard({
         {/* Status Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1 z-10 transition-transform duration-200 group-hover:translate-x-0.5">
           {discountPercent > 0 && (
-            <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md text-white bg-[#C92A2A] shadow-xs leading-none">
+            <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-md text-white bg-[#C92A2A] shadow-xs leading-none">
               -{discountPercent}%
             </span>
           )}
           {p.isBestSeller && discountPercent === 0 && (
-            <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md text-white bg-amber-600 shadow-xs leading-none">
+            <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-md text-white bg-amber-600 shadow-xs leading-none">
               人気商品
             </span>
           )}
           {p.isNew && discountPercent === 0 && !p.isBestSeller && (
-            <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md text-white bg-[#12633D] shadow-xs leading-none">
+            <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-md text-white bg-[#12633D] shadow-xs leading-none">
               新商品
             </span>
           )}
           {p.isRestocked && discountPercent === 0 && !p.isBestSeller && !p.isNew && (
-            <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md text-white bg-blue-600 shadow-xs leading-none">
+            <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-md text-white bg-blue-600 shadow-xs leading-none">
               再入荷
             </span>
           )}
@@ -202,58 +202,58 @@ export function ProductCard({
 
         {/* Quick View Details Pop-Up Pill on Hover */}
         <div className="absolute inset-x-0 bottom-2.5 flex justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-y-1.5 group-hover:translate-y-0 z-10">
-          <span className="px-2.5 py-1 rounded-full bg-white/95 text-[#202824] text-[11px] font-bold shadow-md flex items-center gap-1.5 border border-[#E1E6E2] backdrop-blur-xs">
-            <Eye size={12} className="text-[#12633D]" />
+          <span className="px-3 py-1 rounded-full bg-white/95 text-[#202824] text-xs font-bold shadow-md flex items-center gap-1.5 border border-[#E1E6E2] backdrop-blur-xs">
+            <Eye size={13} className="text-[#12633D]" />
             <span>{locale === "JA" ? "詳細を見る" : locale === "BN" ? "বিস্তারিত দেখুন" : "Quick View"}</span>
           </span>
         </div>
       </div>
 
-      {/* Content Container with Left-to-Right Entrance */}
-      <div className="p-3 flex flex-col flex-1 gap-1.5 transition-colors duration-200">
+      {/* Content Container with Right-to-Left Entrance */}
+      <div className="p-3.5 flex flex-col flex-1 gap-1.5 transition-colors duration-200">
         {/* Brand & Weight/Size */}
-        <div className="flex items-center justify-between text-[11px] text-[#59635D]">
+        <div className="flex items-center justify-between text-xs text-[#59635D]">
           <span className="font-semibold truncate max-w-[120px] transition-colors group-hover:text-[#12633D]">
             {p.brand}
           </span>
           {p.weight && (
-            <span className="shrink-0 font-medium px-1.5 py-0.2 bg-[#F7F8F5] rounded text-[10px]">
+            <span className="shrink-0 font-medium px-1.5 py-0.5 bg-[#F7F8F5] rounded text-[11px] text-[#59635D]">
               {p.weight}
             </span>
           )}
         </div>
 
-        {/* Primary Name (Japanese) */}
-        <h3 className="text-xs sm:text-sm font-bold text-[#202824] leading-snug line-clamp-2 min-h-[2.5rem] group-hover:text-[#12633D] transition-colors duration-150">
+        {/* Primary Name (Japanese / Main Language) */}
+        <h3 className="text-sm sm:text-[15px] font-bold text-[#202824] leading-snug line-clamp-2 min-h-[2.6rem] group-hover:text-[#12633D] transition-colors duration-150">
           {displayName}
         </h3>
 
         {/* Original English Name (if viewing JA or BN) */}
         {locale !== "EN" && p.nameEN && p.nameEN !== displayName && (
-          <p className="text-[11px] text-[#59635D] truncate leading-none">
+          <p className="text-xs text-[#59635D] truncate leading-none">
             {p.nameEN}
           </p>
         )}
 
         {/* Badges: Halal & Temperature */}
-        <div className="flex flex-wrap items-center gap-1 mt-0.5">
+        <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
           <StorageBadge type={p.storage} locale={locale} />
           <HalalBadge tier={p.halalTier} locale={locale} />
         </div>
 
         {/* Price Row: Tax-inclusive and Unit Price */}
-        <div className="flex flex-wrap items-baseline gap-1 mt-auto pt-2 border-t border-[#E1E6E2]/60">
-          <span className="text-sm sm:text-base font-extrabold text-[#202824] whitespace-nowrap transition-transform duration-150 group-hover:translate-x-0.5">
+        <div className="flex flex-wrap items-baseline gap-1.5 mt-auto pt-2.5 border-t border-[#E1E6E2]/60">
+          <span className="text-base sm:text-lg font-extrabold text-[#202824] whitespace-nowrap transition-transform duration-150 group-hover:translate-x-0.5">
             ¥{p.price.toLocaleString()}
           </span>
-          <span className="text-[10px] text-[#59635D] whitespace-nowrap">（税込）</span>
+          <span className="text-[11px] text-[#59635D] whitespace-nowrap font-medium">（税込）</span>
           {unitPrice && (
-            <span className="text-[10px] text-[#12633D] font-bold bg-[#DCFCE7] px-1.5 py-0.5 rounded border border-[#86efac]/80 whitespace-nowrap">
+            <span className="text-[11px] text-[#12633D] font-bold bg-[#DCFCE7] px-1.5 py-0.5 rounded border border-[#86efac]/80 whitespace-nowrap">
               {unitPrice}
             </span>
           )}
           {p.comparePrice && p.comparePrice > p.price && (
-            <span className="text-[10px] text-[#59635D] line-through ml-auto whitespace-nowrap">
+            <span className="text-xs text-[#59635D] line-through ml-auto whitespace-nowrap">
               ¥{p.comparePrice.toLocaleString()}
             </span>
           )}
@@ -263,15 +263,15 @@ export function ProductCard({
         <button
           type="button"
           onClick={handleAdd}
-          className={`w-full py-2 rounded-lg text-xs font-bold text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer mt-1 transition-all duration-150 active:scale-[0.96] ${
+          className={`w-full py-2.5 rounded-lg text-xs sm:text-sm font-bold text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer mt-1.5 transition-all duration-150 active:scale-[0.96] ${
             added
               ? "bg-[#0b4f2a] ring-2 ring-[#0b4f2a]/30"
               : "bg-[#12633D] hover:bg-[#0b4f2a] hover:shadow-xs"
           }`}
         >
           {added ? (
-            <div className="flex items-center gap-1 animate-content-ltr">
-              <Check size={14} className="animate-soft-pulse" />
+            <div className="flex items-center gap-1.5 animate-content-ltr">
+              <Check size={15} className="animate-soft-pulse" />
               <span>{locale === "JA" ? "追加しました" : locale === "BN" ? "যোগ হয়েছে" : "Added!"}</span>
             </div>
           ) : (
