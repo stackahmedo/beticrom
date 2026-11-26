@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {
-  Home, LayoutGrid, Tag, ShoppingCart, User, Lock, X, AlertCircle,
+  Home, LayoutGrid, Tag, ShoppingCart, User,
 } from "lucide-react";
 
 import {
@@ -17,12 +17,11 @@ import { PDPPage } from "./components/PDPPage";
 import { CartPage } from "./components/CartPage";
 import { CheckoutPage } from "./components/CheckoutPage";
 import { AccountPage } from "./components/AccountPage";
-import { AdminPanel } from "./components/AdminPanel";
 import { Footer } from "./components/Footer";
 import { LegalModal } from "./components/LegalModal";
 import { ProductDetailModal } from "./components/ProductDetailModal";
-
-const ADMIN_PASSCODE = "beticrom-admin-2026";
+import { Toaster } from "./components/ui/sonner";
+import { AdminApp } from "../admin/AdminApp";
 
 export default function App() {
   const [locale, setLocale] = useState<Locale>("JA");
@@ -43,15 +42,13 @@ export default function App() {
     }
   };
 
-  // Admin authentication state
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
-  const [adminPromptOpen, setAdminPromptOpen] = useState(false);
-  const [adminPasscodeInput, setAdminPasscodeInput] = useState("");
-  const [adminAuthError, setAdminAuthError] = useState("");
-
   // ── URL Hash Synchronization ──────────────────────────────────────────────
   useEffect(() => {
     const handleHashChange = () => {
+      if (window.location.pathname.startsWith("/admin")) {
+        setView("admin");
+        return;
+      }
       const hash = window.location.hash.replace("#", "");
       if (!hash) return;
 
@@ -72,11 +69,7 @@ export default function App() {
       } else if (hash === "account") {
         setView("account");
       } else if (hash === "admin") {
-        if (!isAdminAuthenticated) {
-          setAdminPromptOpen(true);
-        } else {
-          setView("admin");
-        }
+        setView("admin");
       } else if (hash === "guide") {
         setLegalModalTopic("guide");
       } else if (hash === "tokushoho") {
@@ -89,7 +82,7 @@ export default function App() {
     handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, [isAdminAuthenticated]);
+  }, []);
 
   // Update hash when view or primary state changes
   useEffect(() => {
@@ -148,27 +141,16 @@ export default function App() {
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
-  // ── Admin Authentication Handler ───────────────────────────────────────────
-  const handleAdminAuthSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (adminPasscodeInput === ADMIN_PASSCODE) {
-      setIsAdminAuthenticated(true);
-      setAdminPromptOpen(false);
-      setAdminAuthError("");
-      setView("admin");
-    } else {
-      setAdminAuthError("パスコードが一致しません。正しい管理者パスコードを入力してください。");
-    }
-  };
-
   return (
     <div className="min-h-screen bg-white text-[#202824] flex flex-col font-sans selection:bg-[#12633D]/20">
+      <Toaster richColors position="top-right" />
       {/* If in Admin View */}
-      {view === "admin" && isAdminAuthenticated ? (
-        <AdminPanel
-          setView={setView}
-          onLogout={() => {
-            setIsAdminAuthenticated(false);
+      {view === "admin" ? (
+        <AdminApp
+          onBackToStore={() => {
+            if (window.location.pathname.startsWith("/admin")) {
+              window.history.replaceState(null, "", "/");
+            }
             setView("home");
           }}
         />
@@ -278,13 +260,7 @@ export default function App() {
             locale={locale}
             onOpenLegal={topic => setLegalModalTopic(topic)}
             setView={setView}
-            onOpenAdminPrompt={() => {
-              if (isAdminAuthenticated) {
-                setView("admin");
-              } else {
-                setAdminPromptOpen(true);
-              }
-            }}
+            onOpenAdminPrompt={() => setView("admin")}
           />
 
           {/* Mobile Sticky Bottom Navigation */}
@@ -372,80 +348,10 @@ export default function App() {
 
       {/* Legal & Policy Modal */}
       <LegalModal
+        locale={locale}
         topic={legalModalTopic}
         onClose={() => setLegalModalTopic(null)}
       />
-
-      {/* Admin Passcode Gate Modal */}
-      {adminPromptOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-[#E1E6E2]">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-[#12633D] font-extrabold text-sm">
-                <Lock size={16} />
-                <span>Beticrom 管理者認証</span>
-              </div>
-              <button
-                onClick={() => {
-                  setAdminPromptOpen(false);
-                  setAdminAuthError("");
-                }}
-                className="text-[#59635D] hover:text-[#202824] cursor-pointer"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <p className="text-xs text-[#59635D] leading-relaxed mb-4">
-              社内管理機能へのアクセスには管理者パスコードが必要です。スタッフ認証を行ってください。<br />
-              <span className="text-[10px] text-[#12633D] font-mono mt-1 block">
-                （デモ用認証パスコード: beticrom-admin-2026）
-              </span>
-            </p>
-
-            <form onSubmit={handleAdminAuthSubmit} className="space-y-4">
-              <div>
-                <label className="text-xs font-bold text-[#202824] block mb-1">
-                  管理者パスコード
-                </label>
-                <input
-                  type="password"
-                  value={adminPasscodeInput}
-                  onChange={e => setAdminPasscodeInput(e.target.value)}
-                  placeholder="パスコードを入力"
-                  className="w-full px-3 py-2.5 rounded-xl border border-[#E1E6E2] text-xs outline-none focus:border-[#12633D]"
-                  autoFocus
-                />
-                {adminAuthError && (
-                  <p className="text-xs text-[#C92A2A] font-medium mt-1 flex items-center gap-1">
-                    <AlertCircle size={12} />
-                    <span>{adminAuthError}</span>
-                  </p>
-                )}
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAdminPromptOpen(false);
-                    setAdminAuthError("");
-                  }}
-                  className="flex-1 py-2.5 rounded-xl border border-[#E1E6E2] text-xs font-bold text-[#59635D] hover:bg-[#F7F8F5] cursor-pointer"
-                >
-                  キャンセル
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-[#12633D] text-white text-xs font-bold hover:bg-[#0b4f2a] shadow-xs cursor-pointer"
-                >
-                  ログイン
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

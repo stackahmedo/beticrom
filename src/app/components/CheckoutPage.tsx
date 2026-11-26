@@ -114,27 +114,60 @@ export function CheckoutPage({
     }
   };
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     setCouponError("");
     const code = couponCode.trim().toUpperCase();
-    if (code === "BETICROM500" || code === "BETICORM500") {
-      setAppliedCoupon({ code, discount: 500 });
+    if (!code) return;
+    try {
+      const res = await fetch("/api/v1/storefront/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code,
+          subtotal,
+          shippingAmount: shippingCharge,
+          customerEmail: address.email || undefined,
+        }),
+      });
+      const json = (await res.json()) as { data?: { discountAmount: number }; error?: { message: string } };
+      if (!res.ok || !json.data) {
+        setCouponError(json.error?.message || "有効なクーポンコードではありません。");
+        return;
+      }
+      setAppliedCoupon({ code, discount: json.data.discountAmount });
       setCouponError("");
-    } else {
-      setCouponError("有効なクーポンコードではありません。正しいコードを入力してください。");
+    } catch {
+      setCouponError("クーポン検証サーバーに接続できませんでした。");
     }
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     setIsSubmitting(true);
-    setTimeout(() => {
-      const generatedId = `BC-2026-${Math.floor(100000 + Math.random() * 900000)}`;
-      setOrderComplete(generatedId);
+    try {
+      const res = await fetch("/api/v1/storefront/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: cartItems.map(i => ({ productId: i.product.id, quantity: i.quantity })),
+          shippingAddress: address,
+          delivery,
+          paymentMethodCode: paymentMethod,
+          couponCode: appliedCoupon?.code,
+        }),
+      });
+      const json = (await res.json()) as { data?: { order_number: string }; error?: { message: string } };
+      if (!res.ok || !json.data) {
+        throw new Error(json.error?.message || "注文の確定に失敗しました。");
+      }
+      setOrderComplete(json.data.order_number);
       onClearCart();
-      setIsSubmitting(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 1200);
+    } catch (err) {
+      setCouponError(err instanceof Error ? err.message : "注文処理中にエラーが発生しました。");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // If order completed

@@ -44,6 +44,7 @@ export interface PaymentOption {
   labelBn: string;
   descJa: string;
   descEn: string;
+  descBn?: string;
   fee: number;
   testNote?: string;
 }
