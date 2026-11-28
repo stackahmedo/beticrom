@@ -125,16 +125,105 @@ export function matchCategory(p: Product, catId: string): boolean {
   if (catId === "spices" || catId === "スパイス") {
     return p.subcategory === "Masala & spices" || p.category === "Spices & Seasoning";
   }
+  if (catId === "oils_pickles" || catId === "油・ピクルス") {
+    return p.subcategory === "oil and Ghee" || p.subcategory === "Pickles" || p.subcategory === "Paste";
+  }
+  if (catId === "snacks_sweets" || catId === "スナック・菓子") {
+    return p.subcategory === "Snacks" || p.subcategory === "Sweets";
+  }
+  if (catId === "drinks_ready" || catId === "飲料・レトルト") {
+    return (
+      p.category === "Beverage" ||
+      p.subcategory === "Drink and Juice" ||
+      (p.subcategory === "Ready to eat" && p.category !== "Frozen food" && p.category !== "Frozen Foods")
+    );
+  }
+  if (catId === "beauty_daily" || catId === "美容・日用品") {
+    return p.category === "Beauty Products" || p.category === "Health care" || p.category === "Fruits & Vegetables";
+  }
   if (catId === "others" || catId === "その他") {
     return (
       !matchCategory(p, "meat_fish") &&
       !matchCategory(p, "frozen") &&
       !matchCategory(p, "rice_flour") &&
       !matchCategory(p, "spices") &&
-      !matchCategory(p, "beans")
+      !matchCategory(p, "beans") &&
+      !matchCategory(p, "oils_pickles") &&
+      !matchCategory(p, "snacks_sweets") &&
+      !matchCategory(p, "drinks_ready") &&
+      !matchCategory(p, "beauty_daily")
     );
   }
   return p.category === catId || p.subcategory === catId;
+}
+
+const SEARCH_SYNONYMS: Array<string[]> = [
+  ["paratha", "パラタ", "পরোটা", "porota"],
+  ["puri", "プーリ", "পুরি"],
+  ["samosa", "サモサ", "সমুচা"],
+  ["biryani", "ビリヤニ", "বিরিয়ানি"],
+  ["mutton", "マトン", "羊肉", "খাসি"],
+  ["chicken", "チキン", "鶏肉", "মুরগি"],
+  ["beef", "ビーフ", "牛肉", "গরু"],
+  ["basmati", "バスマティ", "বাসমতি"],
+  ["atta", "アタ", "আটা", "flour", "全粒粉"],
+  ["masala", "マサラ", "মশলা", "spice", "スパイス"],
+  ["pickle", "ピクルス", "アチャール", "আচার"],
+];
+
+export function matchesSearchQuery(p: Product, rawQuery: string): boolean {
+  const q = rawQuery.trim().toLowerCase();
+  if (!q) return true;
+
+  const haystack = [p.nameJA, p.nameEN, p.nameBN, p.brand, p.category, p.subcategory, p.country]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (haystack.includes(q)) return true;
+
+  for (const group of SEARCH_SYNONYMS) {
+    if (group.some(term => q.includes(term) || term.includes(q))) {
+      if (group.some(term => haystack.includes(term))) return true;
+    }
+  }
+  return false;
+}
+
+export function getHalalCertifierInfo(p: Product, locale: Locale): { title: string; detail: string } {
+  if (p.halalTier === "certified") {
+    return {
+      title: locale === "JA" ? "第三者ハラール認証済み" : locale === "BN" ? "তৃতীয় পক্ষের হালাল সার্টিফাইড" : "Third-Party Halal Certified",
+      detail:
+        locale === "JA"
+          ? `認証区分: 公認ハラール認証機関（JMA / HJBA / JAKIM / MUI 等の基準準拠） · 供給元: ${p.supplier || "Beticrom Halal Market"}`
+          : locale === "BN"
+            ? `স্বীকৃত হালাল সার্টিফিকেশন সংস্থা দ্বারা যাচাইকৃত · সরবরাহকারী: ${p.supplier || "Beticrom Halal Market"}`
+            : `Verified by accredited Halal certification body (JMA / HJBA / JAKIM / MUI standards) · Supplier: ${p.supplier || "Beticrom Halal Market"}`,
+    };
+  }
+  if (p.halalTier === "supplier") {
+    return {
+      title: locale === "JA" ? "供給元ハラール申告品" : locale === "BN" ? "সরবরাহকারী ঘোষিত হালাল" : "Supplier-Declared Halal",
+      detail:
+        locale === "JA"
+          ? `製造元・正規輸入元（${p.supplier || p.brand}）によるハラール仕様確認書を受領済み。`
+          : `Halal compliance declaration verified from ${p.supplier || p.brand}.`,
+    };
+  }
+  if (p.halalTier === "nopork") {
+    return {
+      title: locale === "JA" ? "豚・アルコール不使用（植物性/単一素材中心）" : "No Pork / No Alcohol",
+      detail:
+        locale === "JA"
+          ? "原材料表示にて豚由来成分・アルコール不使用を確認済み（第三者ハラール認証マークなし）。"
+          : "Ingredients verified free of pork and alcohol derivatives (no third-party halal seal).",
+    };
+  }
+  return {
+    title: locale === "JA" ? "一般食材（非ハラール区分）" : "Non-Halal / General Item",
+    detail: locale === "JA" ? "ハラール対象外の商品です。原材料をご確認の上ご購入ください。" : "Not categorized as Halal. Check ingredients before purchase.",
+  };
 }
 
 export const MAIN_CATEGORIES: MainCategory[] = [
@@ -189,6 +278,46 @@ export const MAIN_CATEGORIES: MainCategory[] = [
     descriptionJa: "マスール豆、ムング豆、チャナダール、ひよこ豆。豊富な食物繊維と植物性タンパク質。",
   },
   {
+    id: "oils_pickles",
+    ja: "油・ピクルス・ペースト",
+    en: "Oils, Pickles & Pastes",
+    bn: "তেল, আচার ও পেস্ট",
+    icon: "🫙",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "oils_pickles")).length,
+    subcategories: ["Ghee & Mustard Oil", "Mixed Pickles", "Ginger & Garlic Paste"],
+    descriptionJa: "純ギー、マスタードオイル、本格アチャール（ピクルス）、調理用ペースト。",
+  },
+  {
+    id: "snacks_sweets",
+    ja: "スナック・菓子",
+    en: "Snacks & Sweets",
+    bn: "স্ন্যাকস ও মিষ্টি",
+    icon: "🍪",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "snacks_sweets")).length,
+    subcategories: ["Namkeen", "Biscuits", "Traditional Sweets"],
+    descriptionJa: "ナムキーン、サクサクのビスケット、世界の伝統スイーツ・お菓子。",
+  },
+  {
+    id: "drinks_ready",
+    ja: "飲料・レトルト",
+    en: "Drinks & Ready Meals",
+    bn: "পানীয় ও রেডি মিল",
+    icon: "🧃",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "drinks_ready")).length,
+    subcategories: ["Mango Juice", "Chai Tea", "Ready-to-Eat Curries"],
+    descriptionJa: "マンゴードリンク、本格チャイ紅茶、温めるだけのレトルト食品・麺類。",
+  },
+  {
+    id: "beauty_daily",
+    ja: "美容・日用品",
+    en: "Beauty & Daily",
+    bn: "সৌন্দর্য ও নিত্যপণ্য",
+    icon: "🧴",
+    count: ALL_PRODUCTS.filter(p => matchCategory(p, "beauty_daily")).length,
+    subcategories: ["Hair Oil", "Herbal Care", "Daily Essentials"],
+    descriptionJa: "アーユルヴェーダ・ハーブケア、ヘアオイル、海外日用品。",
+  },
+  {
     id: "family",
     ja: "ファミリー・まとめ買い",
     en: "Family & Bulk",
@@ -197,16 +326,6 @@ export const MAIN_CATEGORIES: MainCategory[] = [
     count: ALL_PRODUCTS.filter(p => matchCategory(p, "family")).length,
     subcategories: ["5kg/10kg Rice", "10kg Atta", "5L Oil", "1kg Meats", "Multipack Frozen"],
     descriptionJa: "ご家族の毎日の食卓に。大容量のお米、お肉、食用油、まとめ買い向け商品。",
-  },
-  {
-    id: "others",
-    ja: "その他",
-    en: "Other Groceries",
-    bn: "অন্যান্য খাদ্যদ্রব্য",
-    icon: "🛒",
-    count: ALL_PRODUCTS.filter(p => matchCategory(p, "others")).length,
-    subcategories: ["Oils & Ghee", "Snacks", "Tea & Coffee", "Beverages", "Sweets"],
-    descriptionJa: "マスタードオイル、純ギー、伝統菓子スナック、チャイ紅茶、日用調味料。",
   },
   {
     id: "deals",

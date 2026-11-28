@@ -2,12 +2,13 @@ import {
   Shield, Truck, Phone, Mail, MapPin, ExternalLink, Lock,
 } from "lucide-react";
 import type { LegalTopic, View } from "../types";
-import type { Locale } from "../../data/products";
+import { MAIN_CATEGORIES, type Locale } from "../../data/products";
 
 interface FooterProps {
   locale: Locale;
   onOpenLegal: (topic: LegalTopic) => void;
   setView: (v: View) => void;
+  setSelectedCategory?: (catId: string) => void;
   onOpenAdminPrompt: () => void;
 }
 
@@ -15,6 +16,7 @@ export function Footer({
   locale,
   onOpenLegal,
   setView,
+  setSelectedCategory,
   onOpenAdminPrompt,
 }: FooterProps) {
   return (
@@ -189,44 +191,25 @@ export function Footer({
             </ul>
           </div>
 
-          {/* Column 3: Categories Quick Links */}
+          {/* Column 3: Categories Quick Links (derived directly from MAIN_CATEGORIES for 100% count parity) */}
           <div>
             <h4 className="font-extrabold text-xs uppercase tracking-wider text-[#202824] mb-3">
               主要カテゴリー
             </h4>
             <ul className="space-y-2 text-xs text-[#59635D]">
-              <li>
-                <button
-                  onClick={() => setView("category")}
-                  className="hover:text-[#12633D] transition-colors cursor-pointer"
-                >
-                  ハラール肉・魚（89品）
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => setView("category")}
-                  className="hover:text-[#12633D] transition-colors cursor-pointer"
-                >
-                  冷凍食品・パラタ（57品）
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => setView("category")}
-                  className="hover:text-[#12633D] transition-colors cursor-pointer"
-                >
-                  バスマティ米・アタ粉（54品）
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => setView("category")}
-                  className="hover:text-[#12633D] transition-colors cursor-pointer"
-                >
-                  本格スパイス・マサラ（404品）
-                </button>
-              </li>
+              {MAIN_CATEGORIES.slice(0, 6).map(cat => (
+                <li key={cat.id}>
+                  <button
+                    onClick={() => {
+                      if (setSelectedCategory) setSelectedCategory(cat.id);
+                      setView("category");
+                    }}
+                    className="hover:text-[#12633D] transition-colors cursor-pointer text-left"
+                  >
+                    {locale === "JA" ? cat.ja : locale === "BN" ? cat.bn : cat.en}（{cat.count}品）
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

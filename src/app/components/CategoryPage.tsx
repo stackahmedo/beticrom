@@ -7,13 +7,15 @@ import {
   ALL_PRODUCTS,
   MAIN_CATEGORIES,
   matchCategory,
+  matchesSearchQuery,
   type Product,
   type Locale,
   type StorageType,
   type HalalTier,
 } from "../../data/products";
 import { ProductCard } from "./ProductCard";
-import type { View } from "../types";
+import { ShippingEstimator } from "./ShippingEstimator";
+import type { View, LegalTopic } from "../types";
 
 interface CategoryPageProps {
   locale: Locale;
@@ -25,6 +27,7 @@ interface CategoryPageProps {
   onSelectProduct: (id: string) => void;
   onOpenProductPopup?: (product: Product) => void;
   setView: (v: View) => void;
+  onOpenLegal?: (topic: LegalTopic) => void;
 }
 
 export function CategoryPage({
@@ -37,6 +40,7 @@ export function CategoryPage({
   onSelectProduct,
   onOpenProductPopup,
   setView,
+  onOpenLegal,
 }: CategoryPageProps) {
   const [activeStorage, setActiveStorage] = useState<StorageType | "all">("all");
   const [activeHalal, setActiveHalal] = useState<HalalTier | "all">("all");
@@ -57,26 +61,9 @@ export function CategoryPage({
         if (!matchCategory(p, selectedCategory)) return false;
       }
 
-      // 2. Search query match
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
-        const matchesNameJA = p.nameJA.toLowerCase().includes(q);
-        const matchesNameEN = p.nameEN.toLowerCase().includes(q);
-        const matchesNameBN = p.nameBN.toLowerCase().includes(q);
-        const matchesBrand = (p.brand || "").toLowerCase().includes(q);
-        const matchesSubcat = (p.subcategory || "").toLowerCase().includes(q);
-        const matchesCategory = (p.category || "").toLowerCase().includes(q);
-
-        if (
-          !matchesNameJA &&
-          !matchesNameEN &&
-          !matchesNameBN &&
-          !matchesBrand &&
-          !matchesSubcat &&
-          !matchesCategory
-        ) {
-          return false;
-        }
+      // 2. Search query match (supports JA, EN, BN & alternate scripts)
+      if (searchQuery.trim() && !matchesSearchQuery(p, searchQuery)) {
+        return false;
       }
 
       // 3. Storage temperature match
@@ -286,6 +273,30 @@ export function CategoryPage({
             ))}
           </div>
 
+          {/* Third-Party Certified Halal Quick Filter */}
+          <button
+            type="button"
+            onClick={() => setActiveHalal(prev => (prev === "certified" ? "all" : "certified"))}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer border transition-colors ${
+              activeHalal === "certified"
+                ? "bg-[#166534] text-white border-[#166534]"
+                : "bg-emerald-50 text-[#166534] border-emerald-200 hover:bg-emerald-100"
+            }`}
+          >
+            <Shield size={11} />
+            <span>{locale === "JA" ? "第三者ハラール認証のみ" : "Certified Halal Only"}</span>
+          </button>
+
+          {onOpenLegal && (
+            <button
+              type="button"
+              onClick={() => onOpenLegal("halal")}
+              className="text-[11px] font-bold text-[#12633D] underline hover:text-[#0b4f2a] cursor-pointer px-1"
+            >
+              {locale === "JA" ? "ハラール表示について" : "Halal Guide"}
+            </button>
+          )}
+
           {/* Under 500 toggle */}
           <button
             onClick={() => setUnder500Only(!under500Only)}
@@ -324,6 +335,13 @@ export function CategoryPage({
           </select>
         </div>
       </div>
+
+      {/* Postcode Shipping Estimator near frozen / meat listings */}
+      {(selectedCategory === "frozen" || selectedCategory === "meat_fish" || activeStorage === "frozen") && (
+        <div className="mb-4">
+          <ShippingEstimator locale={locale} compact />
+        </div>
+      )}
 
       {/* Active Filter Indicators */}
       {activeFilterCount > 0 && (

@@ -25,6 +25,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ topic, onClose, locale }
             {topic === "company" && <Building size={20} className="text-[#12633D]" />}
             {topic === "returns" && <RotateCcw size={20} className="text-[#12633D]" />}
             {topic === "contact" && <Mail size={20} className="text-[#12633D]" />}
+            {topic === "halal" && <ShieldCheck size={20} className="text-[#12633D]" />}
             <h2 className="text-base font-bold text-[#202824]">
               {topic === "tokushoho" && "特定商取引法に基づく表記"}
               {topic === "privacy" && (locale === "JA" ? "プライバシーポリシー（個人情報保護方針）" : "Privacy Policy")}
@@ -33,6 +34,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ topic, onClose, locale }
               {topic === "company" && (locale === "JA" ? "会社概要・実店舗のご案内" : "About Beticrom & Store Info")}
               {topic === "returns" && (locale === "JA" ? "返品・交換・特約について" : "Returns & Refund Policy")}
               {topic === "contact" && (locale === "JA" ? "お問い合わせ・カスタマーサポート" : "Customer Support")}
+              {topic === "halal" && (locale === "JA" ? "ハラール表示について（4段階の区分基準）" : "About Our Halal Labeling")}
             </h2>
           </div>
           <button
@@ -46,6 +48,34 @@ export const LegalModal: React.FC<LegalModalProps> = ({ topic, onClose, locale }
 
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-6 text-sm text-[#202824] leading-relaxed space-y-6">
+          {topic === "halal" && (
+            <div className="space-y-4 text-xs">
+              <p className="text-[#59635D] leading-relaxed">
+                ベティクロムでは、お客様が安心して食材を選べるよう、すべての商品を以下の4つの基準で明確に区分・表示しています。
+              </p>
+              <div className="space-y-2.5">
+                <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <p className="font-extrabold text-[#166534]">1. ハラール認証（第三者機関認証済み）</p>
+                  <p className="text-[#166534]/90 mt-1">
+                    JMA、HJBA、JAKIM、MUI、HMA等の公認ハラール認証機関による審査・証明書を確認済みの商品です。食肉はすべて認証済みのみを取り扱っています。
+                  </p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-sky-50 border border-sky-200">
+                  <p className="font-extrabold text-[#075985]">2. 供給元申告（メーカー・輸入元保証）</p>
+                  <p className="text-[#075985]/90 mt-1">
+                    認証マークはないものの、製造元または正規輸入元からハラール適合仕様書・成分証明書の提出を受けている商品です。
+                  </p>
+                </div>
+                <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200">
+                  <p className="font-extrabold text-[#92400e]">3. 豚・酒不使用（原材料確認済み）</p>
+                  <p className="text-[#92400e]/90 mt-1">
+                    単一農産物（米・豆・ホールスパイス等）や植物性食品で、原材料表示に豚由来成分・アルコールが含まれないことを確認済みです。
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 1. 特定商取引法に基づく表記 */}
           {topic === "tokushoho" && (
             <div className="space-y-4">

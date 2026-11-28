@@ -10,6 +10,7 @@ export type LegalTopic =
   | "company"
   | "contact"
   | "returns"
+  | "halal"
   | null;
 
 export interface CartItem {

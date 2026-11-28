@@ -205,6 +205,7 @@ export default function App() {
                 }}
                 onOpenProductPopup={handleOpenProductPopup}
                 setView={setView}
+                onOpenLegal={topic => setLegalModalTopic(topic)}
               />
             )}
 
@@ -260,6 +261,7 @@ export default function App() {
             locale={locale}
             onOpenLegal={topic => setLegalModalTopic(topic)}
             setView={setView}
+            setSelectedCategory={setSelectedCategory}
             onOpenAdminPrompt={() => setView("admin")}
           />
 

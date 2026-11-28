@@ -6,6 +6,7 @@ import {
   ALL_PRODUCTS,
   MAIN_CATEGORIES,
   matchCategory,
+  matchesSearchQuery,
   type Product,
   type Locale,
 } from "../../data/products";
@@ -58,17 +59,11 @@ export function Header({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Autocomplete suggestions
+  // Autocomplete suggestions (supports JA, EN, BN + alternate scripts like paratha / パラタ / পরোটা)
   const suggestions = useMemo(() => {
-    const q = inputValue.trim().toLowerCase();
+    const q = inputValue.trim();
     if (q.length < 2) return [];
-    return ALL_PRODUCTS.filter(p =>
-      p.nameJA.toLowerCase().includes(q) ||
-      p.nameEN.toLowerCase().includes(q) ||
-      p.nameBN.toLowerCase().includes(q) ||
-      (p.brand && p.brand.toLowerCase().includes(q)) ||
-      (p.subcategory && p.subcategory.toLowerCase().includes(q))
-    ).slice(0, 6);
+    return ALL_PRODUCTS.filter(p => matchesSearchQuery(p, q)).slice(0, 6);
   }, [inputValue]);
 
   const handleSearchSubmit = (e?: React.FormEvent) => {

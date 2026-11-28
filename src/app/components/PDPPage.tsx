@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import {
   ALL_PRODUCTS,
+  getHalalCertifierInfo,
   type Product,
   type Locale,
 } from "../../data/products";
@@ -153,17 +154,35 @@ export function PDPPage({
         <div className="lg:col-span-7 space-y-5 animate-slide-ltr">
           {/* Brand, Badges, & SKU */}
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="px-2.5 py-1 rounded-md bg-[#F7F8F5] text-[#202824] font-bold text-xs border border-[#E1E6E2]">
                 {p.brand}
               </span>
               <StorageBadge type={p.storage} locale={locale} />
               <HalalBadge tier={p.halalTier} locale={locale} />
+              <button
+                type="button"
+                onClick={() => onOpenLegal("halal")}
+                className="text-[11px] font-bold text-[#12633D] underline hover:text-[#0b4f2a] cursor-pointer"
+              >
+                {locale === "JA" ? "ハラール表示について" : "Halal Guide"}
+              </button>
             </div>
             <span className="text-[11px] font-mono text-[#59635D]">
               商品番号: #{p.id}
             </span>
           </div>
+
+          {/* Certifier / Declaration Attribution */}
+          {(() => {
+            const info = getHalalCertifierInfo(p, locale);
+            return (
+              <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs">
+                <p className="font-bold text-[#166534]">{info.title}</p>
+                <p className="text-[#166534]/90 mt-0.5 text-[11px]">{info.detail}</p>
+              </div>
+            );
+          })()}
 
           {/* Product Title */}
           <div>

@@ -3,7 +3,7 @@ import { canTransitionOrder, canTransitionReturn } from "../../server/domains/or
 import { verifyWebhookSignature } from "../../server/integrations/webhooks";
 import { hmacSha256Hex } from "../../server/utils/crypto";
 import { calculateShipping, calculateJapanTax } from "../../src/app/types";
-import type { Product } from "../../src/data/products";
+import { ALL_PRODUCTS, MAIN_CATEGORIES, matchCategory, matchesSearchQuery, type Product } from "../../src/data/products";
 
 const mockProduct = (storage: "dry" | "cool" | "frozen", price: number): Product => ({
   id: "0001",
@@ -105,5 +105,49 @@ describe("Webhook HMAC Signature & Replay Window Verification", () => {
         secret,
       }).valid
     ).toBe(false);
+  });
+});
+
+describe("Storefront UI/UX Audit Fixes (P0-P2)", () => {
+  it("has accurate Japanese titles for MDH Chicken Masala and Ahmed Mixed Pickle", () => {
+    const mdh = ALL_PRODUCTS.find(p => p.id === "0041");
+    const pickle = ALL_PRODUCTS.find(p => p.id === "0079");
+    expect(mdh?.nameJA).toContain("マサラ");
+    expect(mdh?.nameJA).not.toContain("ハラール鶏肉");
+    expect(pickle?.nameJA).toContain("ピクルス");
+    expect(pickle?.nameJA).not.toContain("食用油");
+  });
+
+  it("supports alternate scripts/spellings (paratha / パラタ / পরোটা) and consistent category counts", () => {
+    const sampleParatha = ALL_PRODUCTS.find(p => p.nameEN.toLowerCase().includes("paratha"));
+    expect(sampleParatha).toBeDefined();
+    if (sampleParatha) {
+      expect(matchesSearchQuery(sampleParatha, "paratha")).toBe(true);
+      expect(matchesSearchQuery(sampleParatha, "パラタ")).toBe(true);
+      expect(matchesSearchQuery(sampleParatha, "পরোটা")).toBe(true);
+    }
+    for (const cat of MAIN_CATEGORIES) {
+      expect(cat.count).toBe(ALL_PRODUCTS.filter(p => matchCategory(p, cat.id)).length);
+    }
+    expect(MAIN_CATEGORIES.some(c => c.id === "others")).toBe(false);
+  });
+
+  it("supports Devil's Advocate task: certified frozen chicken + rice delivery cost calculation", () => {
+    const frozenChicken = ALL_PRODUCTS.find(
+      p => p.storage === "frozen" && p.halalTier === "certified" && p.nameEN.toLowerCase().includes("chicken")
+    );
+    const rice = ALL_PRODUCTS.find(p => p.storage === "dry" && p.nameEN.toLowerCase().includes("basmati"));
+    expect(frozenChicken).toBeDefined();
+    expect(rice).toBeDefined();
+    const calc = calculateShipping(
+      [
+        { product: frozenChicken!, quantity: 1 },
+        { product: rice!, quantity: 1 },
+      ],
+      false
+    );
+    expect(calc.parcelCount).toBe(2);
+    expect(calc.frozenSurcharge).toBe(330);
+    expect(calc.totalShipping).toBeGreaterThanOrEqual(330);
   });
 });
